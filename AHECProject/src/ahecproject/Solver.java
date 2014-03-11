@@ -10,9 +10,9 @@ package ahecproject;
  *
  * @author Dsiefus
  */
-public class Solver implements Runnable{
+public class Solver extends Thread{
     
-    double x1,x2,x3,x0;    
+    private double x1,x2,x3,x0;    
     public Solver(double x3, double x2, double x1, double x0)
     {        
         this.x1 = x1;
