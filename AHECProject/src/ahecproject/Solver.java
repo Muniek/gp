@@ -5,28 +5,57 @@
  */
 package ahecproject;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Dsiefus
  */
 public class Solver extends Thread {
 
-    private double x1, x2, x3, x0;
-
+    private final double x1, x2, x3, x0;
+    private double r, t, theta, result;
+   
     public Solver(double x3, double x2, double x1, double x0) {
         this.x1 = x1;
         this.x2 = x2;
         this.x3 = x3;
         this.x0 = x0;
+        
+        this.start();
     }
 
     @Override
     public void run() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            while (true) {
+                synchronized (this) {
+                    wait();
+                }
+                double x = (r / 3.0 + t / 3.0 + theta / 13.3) / 3.0;
+                result = x3 * x * x * x + x2 * x * x + x1 * x + x0;
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Solver.class.getName()).log(Level.SEVERE, null, ex);            
+        }
     }
 
-    public double GetResults(double r, double t, double theta) {
-        double x = (r / 3.0 + t / 3.0 + theta / 13.3) / 3.0;
-        return x3 * x * x * x + x2 * x * x + x1 * x + x0;
+    public double GetResults(double r0, double t0, double theta0) {
+        r = r0;
+        t = t0;
+        theta = theta0;
+        synchronized (this) {
+            this.notify();
+        }
+        try {
+            Thread.sleep(500);    
+            if(!this.isAlive())
+                Thread.sleep(500000);    
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Solver.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return result;
     }
+
 }

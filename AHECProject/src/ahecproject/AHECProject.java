@@ -32,19 +32,21 @@ public class AHECProject {
         } catch (InterruptedException ex) {
             Logger.getLogger(AHECProject.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         System.out.println("killing solver");
-        liftSolver = null;
+       
         try {
+            synchronized(liftSolver) { liftSolver.interrupt();}
             TimeUnit.MILLISECONDS.sleep(5000);
+            System.out.println("resuming");
+            if(!liftSolver.isAlive())
+            {
+                System.out.println("NOT ALIVE: zombifying...");               
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(AHECProject.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //creating new solver so it continues
-        liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
-        System.out.println("resuming");
-        synchronized (op) {
-            op.notify();
-        }
+       
 
     }
 }
