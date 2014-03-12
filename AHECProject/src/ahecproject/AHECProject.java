@@ -20,6 +20,7 @@ public class AHECProject {
     public static Solver liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
     public static Solver dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
     public static Optimiser optimiser = new Optimiser();
+    public static Monitor m = new Monitor();
     /**
      * @param args the command line arguments
      */
@@ -28,9 +29,10 @@ public class AHECProject {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);        
         
-        Monitor m = new Monitor();
+        
         
         System.out.println("it's running!");
+        /*
         try {
             TimeUnit.MILLISECONDS.sleep(10000);
         } catch (InterruptedException ex) {
@@ -39,7 +41,7 @@ public class AHECProject {
         
         System.out.println("killing optimiser"); 
         optimiser.interrupt();       
-        
+       */ 
        
 
     }

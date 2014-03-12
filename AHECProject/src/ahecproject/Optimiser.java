@@ -31,11 +31,13 @@ public class Optimiser extends Thread {
             while (true) {                      
                 drag= AHECProject.dragSolver.getResults(r, t, theta);
                 lift= AHECProject.liftSolver.getResults(r, t, theta);
+                if (drag == 0.0){ System.out.println("0!!");
+                    drag= AHECProject.dragSolver.getResults(r, t, theta);}
                 System.out.println("drag=" + drag + ",lift=" + lift + ",ratio=" + (lift / drag));
                 r = (r + Math.random() * 9) % 9.0;
                 t = (t + Math.random() * 9) % 9.0;
                 theta = ((r + Math.random() * 39) % 40.0) + 1.0;
-                Thread.sleep(2500);
+                Thread.sleep(500);
             }
         } catch (InterruptedException ex) {
             System.out.println("Optimiser interrupted!");

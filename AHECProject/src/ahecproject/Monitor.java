@@ -48,7 +48,7 @@ public class Monitor extends Thread {
                 {
                     System.out.println("Some solver is dead! Zombifying");                    
                     AHECProject.liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
-                    AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
+                    AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);                    
                     AHECProject.optimiser = new Optimiser();
                 }
             }
