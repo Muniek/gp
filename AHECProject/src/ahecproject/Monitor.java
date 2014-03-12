@@ -6,17 +6,60 @@
 package ahecproject;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Dsiefus
  */
-public class Monitor {
+public class Monitor extends Thread {
 
+    private double prevDrag, prevLift, prevr, prevt, prevtheta;     
+    Optimiser op = AHECProject.op;
     Monitor() {
-        //TODO
+         prevDrag =0;
+         prevLift=0;
+         prevr=0;
+         prevt=0;
+         prevtheta=0;                  
+         this.start();
     }
 
+    @Override
+    public void run() {        
+        while(true)
+        {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            }            
+            double drag, lift, r, t, theta;
+            drag = op.GetDrag();
+            lift = op.GetLift();
+            if (drag == prevDrag && lift == prevLift)
+            {                
+                if (!AHECProject.dragSolver.isAlive() || !AHECProject.liftSolver.isAlive())
+                {
+                    System.out.println("Some solver is dead! Zombifying");                    
+                    AHECProject.liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
+                    AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
+                    op = new Optimiser();
+                }
+            }
+            if (!op.isAlive())
+            {
+                System.out.println("Optimiser is dead! Zombifying");
+                op = new Optimiser();
+            }
+            prevDrag = drag;
+            prevLift = lift;
+           
+        }
+    }
+    
+    
     public static boolean postShapeParameters(double r, double t, double theta) {
         //TODO
         return true;

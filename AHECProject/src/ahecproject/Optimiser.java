@@ -17,42 +17,39 @@ public class Optimiser extends Thread {
 
     Solver dragSolver;
     Solver liftSolver;
-    double r, t, theta;
+    double r, t, theta, drag, lift;
 
-    public Optimiser() {
+    public Optimiser() {        
         r = Math.random() * 9;
         t = Math.random() * 9;
         theta = Math.random() * 39 + 1.0;
+        this.start();
     }
 
     @Override
     public void run() {
-
-        while (true) {
-            try {
-                double drag = AHECProject.dragSolver.GetResults(r, t, theta);
-                double lift = AHECProject.liftSolver.GetResults(r, t, theta);
-
+        try {
+            while (true) {                      
+                drag = AHECProject.dragSolver.GetResults(r, t, theta);                
+                lift = AHECProject.liftSolver.GetResults(r, t, theta);
+                
                 System.out.println("drag=" + drag + ",lift=" + lift + ",ratio=" + (lift / drag));
                 r = (r + Math.random() * 9) % 9.0;
                 t = (t + Math.random() * 9) % 9.0;
                 theta = ((r + Math.random() * 39) % 40.0) + 1.0;
-                try {
-                    Thread.sleep(2500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(Optimiser.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (NullPointerException ex) {
-                System.out.println("Some solver crashed, stopping...");
-                try {
-                    synchronized (this) {
-                        wait();
-                    }
-                } catch (InterruptedException ex1) {
-                    Logger.getLogger(Optimiser.class.getName()).log(Level.SEVERE, null, ex1);
-                }
+                Thread.sleep(2500);
             }
+        } catch (InterruptedException ex) {
+            System.out.println("Optimiser interrupted!");
         }
 
+    }
+
+    public double GetLift() {
+        return lift;
+    }
+
+    public double GetDrag() {
+        return drag;
     }
 }
