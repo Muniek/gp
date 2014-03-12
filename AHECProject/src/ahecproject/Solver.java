@@ -21,8 +21,7 @@ public class Solver extends Thread {
         this.x1 = x1;
         this.x2 = x2;
         this.x3 = x3;
-        this.x0 = x0;
-        
+        this.x0 = x0;        
         this.start();
     }
 
@@ -41,7 +40,7 @@ public class Solver extends Thread {
         }
     }
 
-    public double GetResults(double r0, double t0, double theta0) {
+    public double getResults(double r0, double t0, double theta0) {
         r = r0;
         t = t0;
         theta = theta0;

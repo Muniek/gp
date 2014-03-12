@@ -17,7 +17,8 @@ public class Optimiser extends Thread {
 
     Solver dragSolver;
     Solver liftSolver;
-    double r, t, theta, drag, lift;
+    public double r, t, theta;
+    double drag, lift;
 
     public Optimiser() {        
         r = Math.random() * 9;
@@ -30,9 +31,8 @@ public class Optimiser extends Thread {
     public void run() {
         try {
             while (true) {                      
-                drag = AHECProject.dragSolver.GetResults(r, t, theta);                
-                lift = AHECProject.liftSolver.GetResults(r, t, theta);
-                
+                drag= AHECProject.dragSolver.getResults(r, t, theta);
+                lift= AHECProject.liftSolver.getResults(r, t, theta);
                 System.out.println("drag=" + drag + ",lift=" + lift + ",ratio=" + (lift / drag));
                 r = (r + Math.random() * 9) % 9.0;
                 t = (t + Math.random() * 9) % 9.0;
@@ -45,11 +45,12 @@ public class Optimiser extends Thread {
 
     }
 
-    public double GetLift() {
+    public double getLift() {
         return lift;
     }
 
-    public double GetDrag() {
+    public double getDrag() {
         return drag;
     }
+    
 }

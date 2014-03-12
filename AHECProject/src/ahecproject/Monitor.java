@@ -36,8 +36,11 @@ public class Monitor extends Thread {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             }            
             double drag, lift, r, t, theta;
-            drag = optimiser.GetDrag();
-            lift = optimiser.GetLift();
+            drag = optimiser.getDrag();
+            lift = optimiser.getLift();
+            r=optimiser.r;
+            t=optimiser.t;
+            theta=optimiser.theta;
             if (drag == prevDrag && lift == prevLift)
             {                
                 if (!AHECProject.dragSolver.isAlive() || !AHECProject.liftSolver.isAlive())
@@ -55,22 +58,24 @@ public class Monitor extends Thread {
             }
             prevDrag = drag;
             prevLift = lift;
-           
+           saveShapeParameters(r,t,theta);
+           saveDrag();
+           saveLift();
         }
     }
     
     
-    public static boolean postShapeParameters(double r, double t, double theta) {
+    public static boolean saveShapeParameters(double r, double t, double theta) {
         //TODO
         return true;
     }
 
-    public static boolean postDrag() {
+    public static boolean saveDrag() {
         //TODO
         return true;
     }
 
-    public static boolean postLift() {
+    public static boolean saveLift() {
         //TODO
         return true;
     }
