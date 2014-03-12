@@ -15,16 +15,40 @@ import java.util.logging.Logger;
  */
 public class Monitor extends Thread {
 
-    private double prevDrag, prevLift, prevr, prevt, prevtheta;    
+    private double prevDrag, prevLift, prevr, prevt, prevtheta;
+    Connection conn;
     
-    Monitor() {
+    Monitor(){
          prevDrag =0;
          prevLift=0;
          prevr=0;
          prevt=0;
-         prevtheta=0;                  
+         prevtheta=0;
+         
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            connectDB();
+        } catch (SQLException ex) {
+                        Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        catch(ClassNotFoundException ex) {
+                        Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
          this.start();
+         
     }
+    
+    void connectDB() throws SQLException {
+
+    conn = null;
+
+        conn = DriverManager.getConnection(
+                         "jdbc:derby://localhost:1527/ahecdb","root","root");
+        System.out.println("Connected to database");
+    }
+
 
     @Override
     public void run() {        
