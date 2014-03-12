@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import view.*;
+
 /**
  *
  * @author Dsiefus
@@ -22,7 +24,10 @@ public class AHECProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+        
         Optimiser op = new Optimiser();
 
         op.start();
