@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Monitor extends Thread {
 
     private double prevDrag, prevLift, prevr, prevt, prevtheta;     
-    Optimiser op = AHECProject.op;
+    Optimiser optimiser = AHECProject.optimiser;
     Monitor() {
          prevDrag =0;
          prevLift=0;
@@ -36,8 +36,8 @@ public class Monitor extends Thread {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             }            
             double drag, lift, r, t, theta;
-            drag = op.GetDrag();
-            lift = op.GetLift();
+            drag = optimiser.GetDrag();
+            lift = optimiser.GetLift();
             if (drag == prevDrag && lift == prevLift)
             {                
                 if (!AHECProject.dragSolver.isAlive() || !AHECProject.liftSolver.isAlive())
@@ -45,13 +45,13 @@ public class Monitor extends Thread {
                     System.out.println("Some solver is dead! Zombifying");                    
                     AHECProject.liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
                     AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
-                    op = new Optimiser();
+                    optimiser = new Optimiser();
                 }
             }
-            if (!op.isAlive())
+            if (!optimiser.isAlive())
             {
                 System.out.println("Optimiser is dead! Zombifying");
-                op = new Optimiser();
+                optimiser = new Optimiser();
             }
             prevDrag = drag;
             prevLift = lift;

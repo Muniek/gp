@@ -19,15 +19,14 @@ public class AHECProject {
 
     public static Solver liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
     public static Solver dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
-    public static Optimiser op = new Optimiser();
+    public static Optimiser optimiser = new Optimiser();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-        
+        frame.setVisible(true);        
         
         Monitor m = new Monitor();
         
