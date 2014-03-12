@@ -12,10 +12,11 @@ import java.sql.*;
  * @author Dsiefus
  */
 public class Monitor {
+
     Monitor() {
         //TODO
     }
-    
+
     public static boolean postShapeParameters(double r, double t, double theta) {
         //TODO
         return true;
@@ -50,7 +51,7 @@ public class Monitor {
         //TODO
         return 1.0;
     }
-    
+
     public static double getRecoveredDrag() {
         //TODO
         return 1.0;
@@ -60,15 +61,14 @@ public class Monitor {
         //TODO
         return 1.0;
     }
-    
+
     public static double getBestDragLift() {
         //TODO
         return 1.0;
     }
-    
-    public static boolean resetDB(){
+
+    public static boolean resetDB() {
         //TODO
         return true;
     }
 }
-

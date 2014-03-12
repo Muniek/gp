@@ -26,35 +26,33 @@ public class Optimiser extends Thread {
     }
 
     @Override
-    public void run() {  
-       
-            while (true) {
-                try{
-                    double drag = AHECProject.dragSolver.GetResults(r, t, theta);
-                    double lift = AHECProject.liftSolver.GetResults(r, t, theta);
-                    
-                    System.out.println("drag=" + drag + ",lift=" + lift + ",ratio=" + (lift / drag));
-                    r = (r + Math.random() * 9) % 9.0;
-                    t = (t + Math.random() * 9) % 9.0;
-                    theta = ((r + Math.random() * 39) % 40.0) + 1.0;
+    public void run() {
+
+        while (true) {
+            try {
+                double drag = AHECProject.dragSolver.GetResults(r, t, theta);
+                double lift = AHECProject.liftSolver.GetResults(r, t, theta);
+
+                System.out.println("drag=" + drag + ",lift=" + lift + ",ratio=" + (lift / drag));
+                r = (r + Math.random() * 9) % 9.0;
+                t = (t + Math.random() * 9) % 9.0;
+                theta = ((r + Math.random() * 39) % 40.0) + 1.0;
                 try {
                     Thread.sleep(2500);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Optimiser.class.getName()).log(Level.SEVERE, null, ex);
-                }                
-            }    
-                catch (NullPointerException ex)
-        {
-            System.out.println("Some solver crashed, stopping...");
-            try {
-                synchronized(this){
-                wait();}
-            } catch (InterruptedException ex1) {
-                Logger.getLogger(Optimiser.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            } catch (NullPointerException ex) {
+                System.out.println("Some solver crashed, stopping...");
+                try {
+                    synchronized (this) {
+                        wait();
+                    }
+                } catch (InterruptedException ex1) {
+                    Logger.getLogger(Optimiser.class.getName()).log(Level.SEVERE, null, ex1);
+                }
             }
         }
-        }
-        
-    }
 
+    }
 }
