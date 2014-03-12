@@ -173,6 +173,7 @@ private void jButtonDragStopActionPerformed(java.awt.event.ActionEvent evt) {//G
 }//GEN-LAST:event_jButtonDragStopActionPerformed
 
 private void jButtonOptimiserStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOptimiserStopActionPerformed
+   System.out.println("opti button pressed. Interrupting?");
     AHECProject.optimiser.interrupt();
 }//GEN-LAST:event_jButtonOptimiserStopActionPerformed
 

@@ -32,13 +32,13 @@ public class AHECProject {
         
         System.out.println("it's running!");
         try {
-            TimeUnit.MILLISECONDS.sleep(3100);
+            TimeUnit.MILLISECONDS.sleep(10000);
         } catch (InterruptedException ex) {
             Logger.getLogger(AHECProject.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        System.out.println("killing solver"); 
-        liftSolver.interrupt();       
+        System.out.println("killing optimiser"); 
+        optimiser.interrupt();       
         
        
 

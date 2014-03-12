@@ -54,6 +54,7 @@ public class Solver extends Thread {
                 Thread.sleep(500000); 
             
         } catch (InterruptedException ex) {
+            System.out.println("get results interrupted!");
             Logger.getLogger(Solver.class.getName()).log(Level.SEVERE, null, ex);
         }        
         return result;

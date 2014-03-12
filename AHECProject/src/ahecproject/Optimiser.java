@@ -14,9 +14,7 @@ import java.util.logging.Logger;
  * @author Dsiefus
  */
 public class Optimiser extends Thread {
-
-    Solver dragSolver;
-    Solver liftSolver;
+    
     public double r, t, theta;
     double drag, lift;
 
