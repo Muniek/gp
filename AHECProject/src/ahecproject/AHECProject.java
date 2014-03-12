@@ -24,9 +24,8 @@ public class AHECProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);        
+        JFrameLogIn loginFrame = new JFrameLogIn();
+        loginFrame.setVisible(true); 
         
         Monitor m = new Monitor();
         
