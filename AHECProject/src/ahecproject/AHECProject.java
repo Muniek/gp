@@ -28,8 +28,6 @@ public class AHECProject {
         JFrameLogIn loginFrame = new JFrameLogIn();
         loginFrame.setVisible(true); 
         
-        
-        
         System.out.println("it's running!");
         /*
         try {
