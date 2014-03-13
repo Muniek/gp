@@ -64,8 +64,7 @@ public class Monitor extends Thread {
             return;
         }
 
-        String createStateTable
-                = "create table ahecdb.SAVE "
+        String createStateTable = "create table ahecdb.SAVE "
                 + "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "R DOUBLE NOT NULL, "
                 + "T DOUBLE NOT NULL, "
@@ -85,8 +84,7 @@ public class Monitor extends Thread {
                 stmt.close();
             }
         }
-        String createUserlogsTable
-                = "create table ahecdb.USERLOGS "
+        String createUserlogsTable = "create table ahecdb.USERLOGS "
                 + "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "USERNAME VARCHAR(30) NOT NULL,"
                 + "SAVED_T TIMESTAMP NOT NULL,"
@@ -104,8 +102,7 @@ public class Monitor extends Thread {
             }
         }
 
-        String createUserTable
-                = "create table ahecdb.USER "
+        String createUserTable = "create table ahecdb.USER "
                 + "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "USERNAME VARCHAR(30) NOT NULL,"
                 + "PASS VARCHAR(30) NOT NULL,"
@@ -124,8 +121,7 @@ public class Monitor extends Thread {
             }
         }
 
-        String createBestTable
-                = "create table ahecdb.BEST "
+        String createBestTable = "create table ahecdb.BEST "
                 + "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "R DOUBLE NOT NULL, "
                 + "T DOUBLE NOT NULL, "
