@@ -28,7 +28,7 @@ public class JFrameMain extends javax.swing.JFrame {
     JFreeChart ratioChart;
     XYSeries ratioSeries;
     int counter = 0;
-    double lastRatio = 0.0, minimum =0.0, max = 22.0;
+    double lastRatio = 0.0, minimum = 0.0, max = 22.0;
     Thread runnable;
 
     /**
@@ -285,29 +285,32 @@ private void jButtonReactivateActionPerformed(java.awt.event.ActionEvent evt) {/
 }//GEN-LAST:event_jButtonReactivateActionPerformed
 
     private void refreshIndicators() {
-        if (AHECProject.liftSolver.isAlive())
+        if (AHECProject.liftSolver.isAlive()) {
             setON(jLabelLiftIndicator);
-        else
+        } else {
             setOFF(jLabelLiftIndicator);
-        
-        if (AHECProject.dragSolver.isAlive())
+        }
+
+        if (AHECProject.dragSolver.isAlive()) {
             setON(jLabelDragIndicator);
-        else
+        } else {
             setOFF(jLabelDragIndicator);
-        
-        if (AHECProject.optimiser.isAlive())
+        }
+
+        if (AHECProject.optimiser.isAlive()) {
             setON(jLabelOptimiserIndicator);
-        else
+        } else {
             setOFF(jLabelOptimiserIndicator);
+        }
 
         jPanel1.repaint();
     }
-    
+
     private void setOFF(javax.swing.JLabel label) {
         label.setText("OFF");
         label.setForeground(Color.red);
     }
-    
+
     private void setON(javax.swing.JLabel label) {
         label.setText("ON");
         label.setForeground(Color.green);
@@ -373,22 +376,24 @@ private void jButtonReactivateActionPerformed(java.awt.event.ActionEvent evt) {/
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 
-    private void refreshGraph() {       
-         //refresh graph
-    if (ratioSeries != null) {        
-        double ratio = AHECProject.optimiser.getLift()/AHECProject.optimiser.getDrag();
-        if (ratio != lastRatio && AHECProject.optimiser.getDrag() != 0.0) {            
-            counter++;
-            if (ratio < minimum)
-                ratioSeries.add(counter, ratio*0.3+minimum);
-            else
-                ratioSeries.add(counter, ratio);
-            lastRatio = ratio;
-            //20s -> counter=60
-            if (minimum < max){
-                double x=counter;
-                minimum = 547.0/6930000*(x + 45)*(x + 45)*(x + 45) - 35279.0/1386000*(x + 45)*(x + 45) + 129629.0/46200*x +11677.0/280;
-                System.out.println("counter="+counter+", min="+minimum);
+    private void refreshGraph() {
+        //refresh graph
+        if (ratioSeries != null) {
+            double ratio = AHECProject.optimiser.getLift() / AHECProject.optimiser.getDrag();
+            if (ratio != lastRatio && AHECProject.optimiser.getDrag() != 0.0) {
+                counter++;
+                if (ratio < minimum) {
+                    ratioSeries.add(counter, ratio * 0.3 + minimum);
+                } else {
+                    ratioSeries.add(counter, ratio);
+                }
+                lastRatio = ratio;
+                //20s -> counter=60
+                if (minimum < max) {
+                    double x = counter;
+                    minimum = 547.0 / 6930000 * (x + 45) * (x + 45) * (x + 45) - 35279.0 / 1386000 * (x + 45) * (x + 45) + 129629.0 / 46200 * x + 11677.0 / 280;
+                    System.out.println("counter=" + counter + ", min=" + minimum);
+                }
             }
         }
     }
