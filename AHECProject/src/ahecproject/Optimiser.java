@@ -10,19 +10,19 @@ package ahecproject;
  * @author Dsiefus
  */
 public class Optimiser extends Thread {
-    
+
     public double r, t, theta;
     double drag, lift;
     public double bestr, bestt, besttheta, bestratio, bestlift, bestdrag;
 
-    public Optimiser() {        
+    public Optimiser() {
         r = Math.random() * 9;
         t = Math.random() * 9;
         theta = Math.random() * 39 + 1.0;
-        bestr=0;
-        bestt=0;
-        besttheta=0;
-        bestratio=0;   
+        bestr = 0;
+        bestt = 0;
+        besttheta = 0;
+        bestratio = 0;
         bestlift = 0;
         bestdrag = 0;
     }
@@ -30,23 +30,25 @@ public class Optimiser extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {                      
-                drag= AHECProject.dragSolver.getResults(r, t, theta);
-                lift= AHECProject.liftSolver.getResults(r, t, theta);
-                if (drag == 0.0){ System.out.println("0!!");
-                    drag= AHECProject.dragSolver.getResults(r, t, theta);}
+            while (true) {
+                drag = AHECProject.dragSolver.getResults(r, t, theta);
+                lift = AHECProject.liftSolver.getResults(r, t, theta);
+                if (drag == 0.0) {
+                    System.out.println("0!!");
+                    drag = AHECProject.dragSolver.getResults(r, t, theta);
+                }
                 //System.out.println("drag=" + drag + ",lift=" + lift + ",ratio=" + (lift / drag));
                 //best record: Best: r=7.890889320762843,t=5.299056644485266, theta=39.238508530409035, ratio=17.139604125757014
-                if (lift / drag > bestratio){
-                    bestratio = lift/drag;
+                if (lift / drag > bestratio) {
+                    bestratio = lift / drag;
                     bestlift = lift;
                     bestdrag = drag;
                     bestr = r;
                     bestt = t;
-                    besttheta = theta;   
-                    System.out.println("Best: r="+AHECProject.optimiser.bestr+",t="+
-                    AHECProject.optimiser.bestt+", theta="+AHECProject.optimiser.besttheta+
-                    ", ratio="+AHECProject.optimiser.bestratio); 
+                    besttheta = theta;
+                    System.out.println("Best: r=" + AHECProject.optimiser.bestr + ",t="
+                            + AHECProject.optimiser.bestt + ", theta=" + AHECProject.optimiser.besttheta
+                            + ", ratio=" + AHECProject.optimiser.bestratio);
                 }
                 r = (r + Math.random() * 9) % 9.0;
                 t = (t + Math.random() * 9) % 9.0;
@@ -66,6 +68,4 @@ public class Optimiser extends Thread {
     public double getDrag() {
         return drag;
     }
-    
-    
 }

@@ -16,12 +16,12 @@ public class Solver extends Thread {
 
     private final double x1, x2, x3, x0;
     private double r, t, theta, result;
-   
-    public Solver(double x3, double x2, double x1, double x0) {        
+
+    public Solver(double x3, double x2, double x1, double x0) {
         this.x1 = x1;
         this.x2 = x2;
         this.x3 = x3;
-        this.x0 = x0;        
+        this.x0 = x0;
         this.start();
     }
 
@@ -48,16 +48,16 @@ public class Solver extends Thread {
             this.notify();
         }
         try {
-            Thread.sleep(200);    
+            Thread.sleep(200);
             //if interrupted, sleep forever
-            if(!this.isAlive())
-                Thread.sleep(500000); 
-            
+            if (!this.isAlive()) {
+                Thread.sleep(500000);
+            }
+
         } catch (InterruptedException ex) {
             System.out.println("get results interrupted!");
             Logger.getLogger(Solver.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        }
         return result;
     }
-
 }
