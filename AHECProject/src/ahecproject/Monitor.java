@@ -85,13 +85,33 @@ public class Monitor extends Thread {
     } finally {
         if (stmt != null) { stmt.close(); }
     }
-        String createUserTable =
-        "create table ahecdb.USERS " +
+        String createUserlogsTable =
+        "create table ahecdb.USERLOGS " +
         "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
         "USERNAME VARCHAR(30) NOT NULL,"+
-        "PASS VARCHAR(30),"+
         "SAVED_T TIMESTAMP NOT NULL,"+
         "PRIMARY KEY (LOG_ID))";
+
+    stmt = null;
+    try {
+        stmt = conn.createStatement();
+        stmt.executeUpdate(createUserlogsTable);
+    } catch (SQLException e) {
+        Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
+    } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+    
+    
+           String createUserTable =
+        "create table ahecdb.USER " +
+        "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
+        "USERNAME VARCHAR(30) NOT NULL,"+
+        "PASS VARCHAR(30) NOT NULL,"+
+        "SAVED_T TIMESTAMP NOT NULL,"+
+        "PRIMARY KEY (USER_ID))";
 
     stmt = null;
     try {
@@ -206,13 +226,16 @@ public class Monitor extends Thread {
     }
 
     public boolean logUser(String username, String pass) {
-      PreparedStatement pstmt;
+        PreparedStatement pstmt;
+
+        pstmt = null;
+
         try {
-      pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME , PASS, SAVED_T) VALUES(?,?,?)");
-      pstmt.setString(1, username);
-      pstmt.setString(2, pass);
-      pstmt.setTimestamp(3, getCurrentTimeStamp());
-      pstmt.executeUpdate();
+            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME, SAVED_T) VALUES(?,?,?)");
+            pstmt.setString(1, username);
+            pstmt.setString(2, pass);
+            pstmt.setTimestamp(3, getCurrentTimeStamp());
+            pstmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -255,6 +278,51 @@ public class Monitor extends Thread {
             Statement stmt = conn.createStatement();
             stmt.setMaxRows(1);
             String sql = "select * from AHECDB.SAVE ORDER BY SAVE_ID DESC";
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            ret = rs.getDouble("THETA");
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+    
+    public double getBestR() {
+        double ret = 0.0;
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.BEST ORDER BY SAVE_ID DESC";
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            ret = rs.getDouble("R");
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+    public double getBestT() {
+        double ret = 0.0;
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.BEST ORDER BY SAVE_ID DESC";
+            ResultSet rs = stmt.executeQuery(sql);
+            rs.next();
+            ret = rs.getDouble("T");
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret; 
+    }
+
+    public double getBestTetha() {
+        double ret = 0.0;
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.BEST ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
             rs.next();
             ret = rs.getDouble("THETA");
