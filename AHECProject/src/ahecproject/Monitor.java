@@ -102,8 +102,8 @@ public class Monitor extends Thread {
             }
         }
 
-        String createUserTable = "create table ahecdb.USER "
-                + "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+        String createUserTable = "create table ahecdb.USERS "
+                + "(USER_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "USERNAME VARCHAR(30) NOT NULL,"
                 + "PASS VARCHAR(30) NOT NULL,"
                 + "SAVED_T TIMESTAMP NOT NULL,"
@@ -239,7 +239,7 @@ public class Monitor extends Thread {
         pstmt = null;
 
         try {
-            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME, SAVED_T) VALUES(?,?,?)");
+            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERLOGS(USERNAME, SAVED_T) VALUES(?,?)");
             pstmt.setString(1, username);
             pstmt.setTimestamp(2, getCurrentTimeStamp());
             pstmt.executeUpdate();
