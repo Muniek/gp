@@ -39,6 +39,7 @@ public class Monitor extends Thread {
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
+        AHECProject.optimiser.start();
          this.start(); 
     }
     
@@ -152,18 +153,20 @@ public class Monitor extends Thread {
                     AHECProject.liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
                     AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);                    
                     AHECProject.optimiser = new Optimiser();
+                    AHECProject.optimiser.start();
                 }
-            }
-            System.out.println("opt is alive. "+AHECProject.optimiser.isAlive());
+            }            
             if (!AHECProject.optimiser.isAlive())
             {
                 System.out.println("Optimiser is dead! Zombifying");
                 AHECProject.optimiser = new Optimiser();
+                AHECProject.optimiser.start();
             }
             prevDrag = drag;
             prevLift = lift;
+            //System.out.println("r="+r);
            saveStateValues(r,t,theta,drag,lift);
-           System.out.println("Recovered drag is" + Double.toString(getRecoveredR()));
+           //System.out.println("Recovered r is" + Double.toString(getRecoveredR()));
         }
     }
     

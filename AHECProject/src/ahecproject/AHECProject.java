@@ -5,9 +5,6 @@
  */
 package ahecproject;
 
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import view.*;
 
@@ -20,7 +17,7 @@ public class AHECProject {
     public static Solver liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
     public static Solver dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
     public static Optimiser optimiser = new Optimiser();
-    public static Monitor m = new Monitor();
+    public static Monitor m= new Monitor();
     /**
      * @param args the command line arguments
      */
