@@ -27,8 +27,9 @@ public class JFrameMain extends javax.swing.JFrame {
     JFreeChart ratioChart;
     XYSeries ratioSeries;
     int counter = 0;
-    double lastRatio = 0.0, minimum =0.0, max = 17.0;
+    double lastRatio = 0.0, minimum =0.0, max = 30.0;
     Thread runnable;
+
     /**
      * Creates new formonitor JFramonitoreMain
      */
@@ -36,9 +37,10 @@ public class JFrameMain extends javax.swing.JFrame {
         initComponents();
         this.showGraph();
         runnable = new Thread() {
+
             @Override
             public void run() {
-                while(true){                              
+                while (true) {
                     try {
                         Thread.sleep(100);
                         JFrameMain.this.refreshGraph();
@@ -49,7 +51,7 @@ public class JFrameMain extends javax.swing.JFrame {
                 }
             }
         };
-        
+
         runnable.start();
     }
 
@@ -73,7 +75,6 @@ public class JFrameMain extends javax.swing.JFrame {
         jButtonDragStop = new javax.swing.JButton();
         jButtonOptimiserStop = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jButtonRefresh = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPaneOptimiserIndicator = new javax.swing.JTextPane();
 
@@ -113,14 +114,6 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jLabel3.setText("Optimiser");
 
-        jButtonRefresh.setForeground(new java.awt.Color(-16711936,true));
-        jButtonRefresh.setText("REFRESH");
-        jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRefreshActionPerformed(evt);
-            }
-        });
-
         jScrollPane3.setViewportView(jTextPaneOptimiserIndicator);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -130,69 +123,63 @@ public class JFrameMain extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                            .addComponent(jButtonLiftStop, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
+                        .addGap(70, 70, 70))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButtonDragStop, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                        .addGap(76, 76, 76)
+                        .addComponent(jButtonOptimiserStop, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-                                        .addGap(80, 80, 80))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonLiftStop, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                                .addGap(70, 70, 70)
-                                .addComponent(jButtonDragStop, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE))
                         .addGap(76, 76, 76)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonOptimiserStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(14, 14, 14))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(jLabel3)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(156, 156, 156)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonDragStop, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonOptimiserStop, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonLiftStop, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jButtonRefresh)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonLiftStop, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonDragStop, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonOptimiserStop, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(277, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -210,32 +197,27 @@ private void jButtonOptimiserStopActionPerformed(java.awt.event.ActionEvent evt)
     AHECProject.optimiser.interrupt();
 }//GEN-LAST:event_jButtonOptimiserStopActionPerformed
 
-private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
-    refreshIndicators();
-}//GEN-LAST:event_jButtonRefreshActionPerformed
+    private void refreshIndicators() {
+        jTextPaneDragIndicator.setText(AHECProject.dragSolver.isAlive() ? "alive" : "nevermore");
+        jTextPaneLiftIndicator.setText(AHECProject.liftSolver.isAlive() ? "alive" : "nevermore");
+        jTextPaneOptimiserIndicator.setText(AHECProject.optimiser.isAlive() ? "alive" : "nevermore");
 
-private void refreshIndicators()
-{
-     jTextPaneDragIndicator.setText(AHECProject.dragSolver.isAlive() ? "alive" : "nevermore");
-    jTextPaneLiftIndicator.setText(AHECProject.liftSolver.isAlive() ? "alive" : "nevermore");
-    jTextPaneOptimiserIndicator.setText(AHECProject.optimiser.isAlive() ? "alive" : "nevermore");   
+        jPanel1.repaint();
+    }
 
-    jPanel1.repaint();
-}
+    private void showGraph() {
+        ratioSeries = new XYSeries("Lift/Drag");
+        ratioSeries.add(0.0, 0.0);
+        XYDataset xyDataset = new XYSeriesCollection(ratioSeries);
 
-private void showGraph()
-{
-    ratioSeries = new XYSeries("Lift/Drag"); 
-    ratioSeries.add(0.0, 0.0);
-    XYDataset xyDataset = new XYSeriesCollection(ratioSeries);
+        ratioChart = ChartFactory.createXYLineChart("Lift/Drag ratio", "Cycle", "Ratio",
+                xyDataset, PlotOrientation.VERTICAL, true, true, false);
 
-    ratioChart = ChartFactory.createXYLineChart("Lift/Drag ratio", "Cycle", "Ratio",
-            xyDataset, PlotOrientation.VERTICAL, true, true, false);
+        ChartFrame frame1 = new ChartFrame("Ratio", ratioChart);
+        frame1.setVisible(true);
+        frame1.setSize(400, 400);
+    }
 
-    ChartFrame frame1 = new ChartFrame("Ratio", ratioChart);
-    frame1.setVisible(true);
-    frame1.setSize(400, 400);
-}
     /**
      * @param args the comonitormonitorand line argumonitorents
      */
@@ -269,7 +251,6 @@ private void showGraph()
     private javax.swing.JButton jButtonDragStop;
     private javax.swing.JButton jButtonLiftStop;
     private javax.swing.JButton jButtonOptimiserStop;
-    private javax.swing.JButton jButtonRefresh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -293,9 +274,12 @@ private void showGraph()
             else
                 ratioSeries.add(counter, ratio);
             lastRatio = ratio;
-            if (counter % 5 == 0 && minimum < max)
-                minimum += 1.0;
+            //20s -> counter=60
+            if (minimum < max){
+                minimum =0.006*counter*counter-0.1*counter;
+                System.out.println("counter="+counter+", min="+minimum);
+            }
         }
     }
-    }
+}
 }
