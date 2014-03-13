@@ -153,6 +153,8 @@ public class Monitor extends Thread {
                     AHECProject.liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
                     AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);                    
                     AHECProject.optimiser = new Optimiser();
+                    AHECProject.optimiser.bestdrag = this.getBestDrag();
+                    AHECProject.optimiser.bestlift = this.getBestLift();                    
                     AHECProject.optimiser.start();
                 }
             }            
@@ -165,6 +167,9 @@ public class Monitor extends Thread {
             prevDrag = drag;
             prevLift = lift;
             //System.out.println("r="+r);
+           saveBestResult(AHECProject.optimiser.bestr, AHECProject.optimiser.bestt,
+                   AHECProject.optimiser.besttheta, AHECProject.optimiser.bestdrag,
+                AHECProject.optimiser.bestlift);
            saveStateValues(r,t,theta,drag,lift);
            //System.out.println("Recovered r is" + Double.toString(getRecoveredR()));
         }
@@ -309,7 +314,7 @@ public class Monitor extends Thread {
         return ret;
     }
     
-        public double getBestLift() {
+    public double getBestLift() {
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();

@@ -13,7 +13,7 @@ public class Optimiser extends Thread {
     
     public double r, t, theta;
     double drag, lift;
-    public double bestr, bestt, besttheta, bestratio;
+    public double bestr, bestt, besttheta, bestratio, bestlift, bestdrag;
 
     public Optimiser() {        
         r = Math.random() * 9;
@@ -22,7 +22,9 @@ public class Optimiser extends Thread {
         bestr=0;
         bestt=0;
         besttheta=0;
-        bestratio=0;       
+        bestratio=0;   
+        bestlift = 0;
+        bestdrag = 0;
     }
 
     @Override
@@ -37,9 +39,11 @@ public class Optimiser extends Thread {
                 //best record: Best: r=7.890889320762843,t=5.299056644485266, theta=39.238508530409035, ratio=17.139604125757014
                 if (lift / drag > bestratio){
                     bestratio = lift/drag;
-                    bestr=r;
-                    bestt=t;
-                    besttheta=theta;   
+                    bestlift = lift;
+                    bestdrag = drag;
+                    bestr = r;
+                    bestt = t;
+                    besttheta = theta;   
                     System.out.println("Best: r="+AHECProject.optimiser.bestr+",t="+
                     AHECProject.optimiser.bestt+", theta="+AHECProject.optimiser.besttheta+
                     ", ratio="+AHECProject.optimiser.bestratio); 
