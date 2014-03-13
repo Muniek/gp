@@ -5,11 +5,14 @@
  */
 package ahecproject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 /**
  *
@@ -22,6 +25,7 @@ public class Monitor extends Thread {
     private static final DateFormat dateFormat = new SimpleDateFormat(
             "yyyy/MM/dd HH:mm:ss");
     private boolean autoMode;
+    private MessageDigest md5;
 
     Monitor() {
         prevDrag = 0;
@@ -30,6 +34,13 @@ public class Monitor extends Thread {
         prevt = 0;
         prevtheta = 0;
         autoMode = true;
+        
+        try {
+            md5 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             connectDB();
@@ -142,6 +153,17 @@ public class Monitor extends Thread {
                 stmt.close();
             }
         }
+
+        PreparedStatement pstmt;
+        try {
+            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME,PASS) VALUES(?,?)");
+            pstmt.setString(1, "admin");
+            String pass = (new HexBinaryAdapter()).marshal(md5.digest("admin".getBytes()));
+            pstmt.setString(2, pass);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -235,7 +257,20 @@ public class Monitor extends Thread {
 
     public boolean logUser(String username, String pass) {
         PreparedStatement pstmt;
-
+        ResultSet rs;
+        try {
+            pstmt = conn.prepareStatement("SELECT * FROM AHECDB.USERS WHERE USERNAME = ? AND PASS = ?");
+            pstmt.setString(1, username);
+            pass = (new HexBinaryAdapter()).marshal(md5.digest(pass.getBytes()));
+            pstmt.setString(2, pass);
+            rs = pstmt.executeQuery();
+            if(!rs.next()) {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         pstmt = null;
 
         try {
