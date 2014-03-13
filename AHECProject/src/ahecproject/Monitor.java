@@ -32,9 +32,12 @@ public class Monitor extends Thread {
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             connectDB();
+            setupDB();
         }
         catch(ClassNotFoundException ex) {
                         Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
          this.start(); 
     }
@@ -44,7 +47,7 @@ public class Monitor extends Thread {
         conn = null;
         try {
             conn = DriverManager.getConnection(
-                    "jdbc:derby://localhost:1527/ahecdb", "root", "root");
+                    "jdbc:derby://localhost:1527/ahecdb;create=true;user=root;password=root");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Connected to database");
@@ -53,6 +56,14 @@ public class Monitor extends Thread {
 
     
     void setupDB() throws SQLException {
+        Statement stmt = null;
+        stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM SYS.SYSSCHEMAS WHERE SCHEMANAME = 'AHECDB'");
+        if (rs.next()) {
+            System.out.println("Schema already exists");
+            return;
+        }
+
     String createStateTable =
         "create table ahecdb.SAVE " +
         "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
@@ -61,10 +72,10 @@ public class Monitor extends Thread {
         "THETA DOUBLE NOT NULL, " +
         "DRAG DOUBLE NOT NULL, " + 
         "LIFT DOUBLE NOT NULL, " +
-        "TIME TIMESTAMP NOT NULL, "  +
+        "SAVED_T TIMESTAMP NOT NULL, "  +
         "PRIMARY KEY (SAVE_ID))";
 
-    Statement stmt = null;
+    
     try {
         stmt = conn.createStatement();
         stmt.executeUpdate(createStateTable);
@@ -74,11 +85,11 @@ public class Monitor extends Thread {
         if (stmt != null) { stmt.close(); }
     }
         String createUserTable =
-        "create table ahecdb.SAVE " +
+        "create table ahecdb.USERS " +
         "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
         "USERNAME VARCHAR(30) NOT NULL,"+
         "PASS VARCHAR(30),"+
-        "TIME TIMESTAMP NOT NULL,"+
+        "SAVED_T TIMESTAMP NOT NULL,"+
         "PRIMARY KEY (LOG_ID))";
 
     stmt = null;
@@ -93,23 +104,21 @@ public class Monitor extends Thread {
             }
         }
         
-    stmt = null;
-        
     String createBestTable =
-        "create table ahecdb.best " +
+        "create table ahecdb.BEST " +
         "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
         "R DOUBLE NOT NULL, " +
         "T DOUBLE NOT NULL, " +
         "THETA DOUBLE NOT NULL, " +
         "DRAG DOUBLE NOT NULL," + 
         "LIFT DOUBLE NOT NULL," +
-        "TIME TIMESTAMP NOT NULL,"  +
+        "SAVED_T TIMESTAMP NOT NULL,"  +
         "PRIMARY KEY (SAVE_ID))";
 
         stmt = null;
         try {
             stmt = conn.createStatement();
-            stmt.executeUpdate(createUserTable);
+            stmt.executeUpdate(createBestTable);
         } catch (SQLException e) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
         } finally {
@@ -154,18 +163,22 @@ public class Monitor extends Thread {
             prevDrag = drag;
             prevLift = lift;
            saveStateValues(r,t,theta,drag,lift);
+           System.out.println("Recovered drag is" + Double.toString(getRecoveredR()));
         }
     }
     
     
     public boolean saveStateValues(double r, double t, double theta, double drag, double lift) {
-      Statement stmt;
+      PreparedStatement pstmt;
         try {
-      stmt = conn.createStatement();      
-      String sql = "INSERT INTO SAVE(R ,T, THETA, DRAG, LIFT, TIME) " +
-                   "VALUES (" + Double.toString(r) + ", " + Double.toString(t)+ ", " + Double.toString(theta) + ", "+
-                    Double.toString(drag) + ", "+Double.toString(lift) + ", "+ getCurrentTimeStamp()+")";
-      stmt.executeUpdate(sql);
+      pstmt = conn.prepareStatement("INSERT INTO AHECDB.SAVE(R , T , THETA , DRAG , LIFT , SAVED_T) VALUES(?,?,?,?,?,?)");
+      pstmt.setDouble(1, r);
+      pstmt.setDouble(2, t);
+      pstmt.setDouble(3, theta);
+      pstmt.setDouble(4, drag);
+      pstmt.setDouble(5, lift);
+      pstmt.setTimestamp(6, getCurrentTimeStamp());
+      pstmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,13 +186,16 @@ public class Monitor extends Thread {
     }
     
     public boolean saveBestResult(double r, double t, double theta, double drag, double lift) {
-      Statement stmt;
+      PreparedStatement pstmt;
         try {
-      stmt = conn.createStatement();      
-      String sql = "INSERT INTO BEST(R ,T, THETA, DRAG, LIFT, TIME) " +
-                   "VALUES (" + Double.toString(r) + ", " + Double.toString(t)+ ", " + Double.toString(theta) + ", "+
-                    Double.toString(drag) + ", "+Double.toString(lift) + ", "+ getCurrentTimeStamp()+")";
-      stmt.executeUpdate(sql);
+      pstmt = conn.prepareStatement("INSERT INTO AHECDB.BEST(R , T , THETA , DRAG , LIFT , SAVED_T) VALUES(?,?,?,?,?,?)");
+      pstmt.setDouble(1, r);
+      pstmt.setDouble(2, t);
+      pstmt.setDouble(3, theta);
+      pstmt.setDouble(4, drag);
+      pstmt.setDouble(5, lift);
+      pstmt.setTimestamp(6, getCurrentTimeStamp());
+      pstmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -187,12 +203,13 @@ public class Monitor extends Thread {
     }
 
     public boolean logUser(String username, String pass) {
-      Statement stmt;
+      PreparedStatement pstmt;
         try {
-      stmt = conn.createStatement();      
-      String sql = "INSERT INTO USER(USERNAME, PASSWORD, TIME) " +
-                   "VALUES ('" + username + "', '" + pass +"', "+ getCurrentTimeStamp() +")";
-      stmt.executeUpdate(sql);
+      pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME , PASS, SAVED_T) VALUES(?,?,?)");
+      pstmt.setString(1, username);
+      pstmt.setString(2, pass);
+      pstmt.setTimestamp(3, getCurrentTimeStamp());
+      pstmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -203,9 +220,10 @@ public class Monitor extends Thread {
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM SAVE \nWHERE SAVE_ID = (\n    SELECT IDENT_CURRENT('SAVE'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.SAVE ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("R");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,27 +232,28 @@ public class Monitor extends Thread {
     }
 
     public double getRecoveredT() {
-                double ret = 0.0;
+        double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM SAVE \nWHERE SAVE_ID = (\n    SELECT IDENT_CURRENT('SAVE'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.SAVE ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("T");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return ret;
+        return ret; 
     }
 
     public double getRecoveredTetha() {
-
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM SAVE \nWHERE SAVE_ID = (\n SELECT IDENT_CURRENT('SAVE'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.SAVE ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("THETA");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -246,9 +265,10 @@ public class Monitor extends Thread {
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM SAVE \nWHERE SAVE_ID = (\n SELECT IDENT_CURRENT('SAVE'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.SAVE ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("DRAG");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -260,9 +280,10 @@ public class Monitor extends Thread {
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM SAVE \nWHERE SAVE_ID = (\n SELECT IDENT_CURRENT('SAVE'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.SAVE ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("LIFT");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -274,9 +295,10 @@ public class Monitor extends Thread {
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM BEST \nWHERE SAVE_ID = (\n SELECT IDENT_CURRENT('BEST'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.BEST ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("DRAG");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -288,9 +310,10 @@ public class Monitor extends Thread {
         double ret = 0.0;
         try {
             Statement stmt = conn.createStatement();
-            String sql = "SELECT * FROM BEST \nWHERE SAVE_ID = (\n SELECT IDENT_CURRENT('BEST'))";
+            stmt.setMaxRows(1);
+            String sql = "select * from AHECDB.BEST ORDER BY SAVE_ID DESC";
             ResultSet rs = stmt.executeQuery(sql);
-            rs.first();
+            rs.next();
             ret = rs.getDouble("LIFT");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
@@ -298,8 +321,8 @@ public class Monitor extends Thread {
         return ret;
     }
 
-    private static String getCurrentTimeStamp() {
-		java.util.Date today = new java.util.Date();
-		return dateFormat.format(today.getTime());
+    private static Timestamp getCurrentTimeStamp() {
+        java.util.Date date= new java.util.Date();
+        return new Timestamp(date.getTime());
 	}
 }
