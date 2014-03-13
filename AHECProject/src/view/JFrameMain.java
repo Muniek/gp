@@ -27,7 +27,7 @@ public class JFrameMain extends javax.swing.JFrame {
     JFreeChart ratioChart;
     XYSeries ratioSeries;
     int counter = 0;
-    double lastRatio = 0.0, minimum =0.0, max = 30.0;
+    double lastRatio = 0.0, minimum =0.0, max = 22.0;
     Thread runnable;
 
     /**
@@ -276,7 +276,8 @@ private void jButtonOptimiserStopActionPerformed(java.awt.event.ActionEvent evt)
             lastRatio = ratio;
             //20s -> counter=60
             if (minimum < max){
-                minimum =0.006*counter*counter-0.1*counter;
+                double x=counter;
+                minimum = 547.0/6930000*(x + 45)*(x + 45)*(x + 45) - 35279.0/1386000*(x + 45)*(x + 45) + 129629.0/46200*x +11677.0/280;
                 System.out.println("counter="+counter+", min="+minimum);
             }
         }
