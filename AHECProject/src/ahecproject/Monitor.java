@@ -245,8 +245,7 @@ public class Monitor extends Thread {
         try {
             pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME, SAVED_T) VALUES(?,?,?)");
             pstmt.setString(1, username);
-            pstmt.setString(2, pass);
-            pstmt.setTimestamp(3, getCurrentTimeStamp());
+            pstmt.setTimestamp(2, getCurrentTimeStamp());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
