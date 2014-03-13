@@ -35,6 +35,18 @@ public class JFrameMain extends javax.swing.JFrame {
      * Creates new formonitor JFramonitoreMain
      */
     public JFrameMain() {
+         try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    System.out.println("NIMBUS!!!!");
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(JFrameMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+         
         initComponents();
         this.showGraph();
         runnable = new Thread() {
@@ -335,9 +347,11 @@ private void jButtonReactivateActionPerformed(java.awt.event.ActionEvent evt) {/
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        System.out.println("TRY!!!!");
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
+                    System.out.println("NIMBUS!!!!");
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -392,4 +406,5 @@ private void jButtonReactivateActionPerformed(java.awt.event.ActionEvent evt) {/
             }
         }
     }
+}
 }
