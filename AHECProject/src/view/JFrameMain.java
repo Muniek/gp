@@ -156,10 +156,12 @@ public class JFrameMain extends javax.swing.JFrame {
                     .addComponent(jButtonAddUserPanel)))
         );
 
-        jLayeredPaneMain.setForeground(new java.awt.Color(-855568,true));
+        jLayeredPaneMain.setBackground(new java.awt.Color(-1118482,true));
+        jLayeredPaneMain.setForeground(new java.awt.Color(-1118482,true));
 
+        jPanelAddUser.setBackground(new java.awt.Color(-1118482,true));
         jPanelAddUser.setBorder(null);
-        jPanelAddUser.setForeground(new java.awt.Color(-855568,true));
+        jPanelAddUser.setForeground(new java.awt.Color(-1118482,true));
 
         jScrollPane1.setViewportView(jTextPaneLogin);
 
@@ -226,7 +228,8 @@ public class JFrameMain extends javax.swing.JFrame {
         jPanelAddUser.setBounds(0, 0, 720, 340);
         jLayeredPaneMain.add(jPanelAddUser, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jPanelComputations.setForeground(new java.awt.Color(-855568,true));
+        jPanelComputations.setBackground(new java.awt.Color(-1118482,true));
+        jPanelComputations.setForeground(new java.awt.Color(-1118482,true));
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14));
         jLabel1.setText("Lift solver");
@@ -331,8 +334,9 @@ public class JFrameMain extends javax.swing.JFrame {
         jPanelComputations.setBounds(0, 0, 720, 340);
         jLayeredPaneMain.add(jPanelComputations, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        jPanelSettings.setBackground(new java.awt.Color(-1118482,true));
         jPanelSettings.setBorder(null);
-        jPanelSettings.setForeground(new java.awt.Color(-855568,true));
+        jPanelSettings.setForeground(new java.awt.Color(-1118482,true));
 
         jButtonAutomatic.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jButtonAutomatic.setText("Automatic");
@@ -464,17 +468,21 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
          errorMessage = "Password needs to be at least 6 characters long";
         
     if (errorMessage.isEmpty()) {
-        jLabelAddUserInfo.setText("User added");
-        jLabelAddUserInfo.setForeground(Color.green);
-        AHECProject.dbManager.insertUser(jTextPaneLogin.getText(), jPasswordFieldPassword.getText());        
+        if (AHECProject.dbManager.insertUser(jTextPaneLogin.getText(), jPasswordFieldPassword.getText())) {
+            jLabelAddUserInfo.setText("User added");
+            jLabelAddUserInfo.setForeground(Color.green);
+            jTextPaneLogin.setText("");
+        } else {
+            jLabelAddUserInfo.setText("User with such login already exists");
+        }
         
     } else  {
         jLabelAddUserInfo.setText(errorMessage);
         jLabelAddUserInfo.setForeground(Color.red);
-        //cleaning the password boxes
-        jPasswordFieldPassword.setText("");
-        jPasswordFieldPasswordRepeat.setText("");
     }
+     //cleaning the password boxes
+     jPasswordFieldPassword.setText("");
+     jPasswordFieldPasswordRepeat.setText("");
 }//GEN-LAST:event_jButton1ActionPerformed
 
     private void refreshIndicators() {
