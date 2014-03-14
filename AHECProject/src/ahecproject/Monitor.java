@@ -16,22 +16,22 @@ import java.util.logging.Logger;
  */
 public class Monitor extends Thread {
 
-    private double prevDrag, prevLift, prevr, prevt, prevtheta;    
+    private double prevDrag, prevLift, prevr, prevt, prevtheta;
     private static final DateFormat dateFormat = new SimpleDateFormat(
             "yyyy/MM/dd HH:mm:ss");
-    private boolean autoMode;    
+    private boolean autoMode;
     private String currentUser;
+
     Monitor() {
         prevDrag = 0;
         prevLift = 0;
         prevr = 0;
         prevt = 0;
         prevtheta = 0;
-        autoMode = true;             
-        AHECProject.optimiser.start();
-        this.start();
+        autoMode = true;
+
     }
-     
+
     @Override
     public void run() {
         while (true) {
@@ -40,40 +40,44 @@ public class Monitor extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             }
+            if (!currentUser.isEmpty()) {
+                double drag, lift, r, t, theta;
+                drag = AHECProject.optimiser.getDrag();
+                lift = AHECProject.optimiser.getLift();
+                r = AHECProject.optimiser.r;
+                t = AHECProject.optimiser.t;
+                theta = AHECProject.optimiser.theta;
+                if (drag == prevDrag && lift == prevLift && autoMode) {
+                    this.reactivate();
+                }
 
-            double drag, lift, r, t, theta;
-            drag = AHECProject.optimiser.getDrag();
-            lift = AHECProject.optimiser.getLift();
-            r = AHECProject.optimiser.r;
-            t = AHECProject.optimiser.t;
-            theta = AHECProject.optimiser.theta;
-            if (drag == prevDrag && lift == prevLift && autoMode) {
-                this.reactivate();
+                prevDrag = drag;
+                prevLift = lift;
+
+                AHECProject.dbManager.saveBestResult(AHECProject.optimiser.bestr, AHECProject.optimiser.bestt,
+                        AHECProject.optimiser.besttheta, AHECProject.optimiser.bestdrag,
+                        AHECProject.optimiser.bestlift);
+                AHECProject.dbManager.saveStateValues(r, t, theta, drag, lift);
             }
-
-            prevDrag = drag;
-            prevLift = lift;
-
-            AHECProject.dbManager.saveBestResult(AHECProject.optimiser.bestr, AHECProject.optimiser.bestt,
-                    AHECProject.optimiser.besttheta, AHECProject.optimiser.bestdrag,
-                    AHECProject.optimiser.bestlift);
-            System.out.println("saving r="+r);
-            AHECProject.dbManager.saveStateValues(r, t, theta, drag, lift);
-            System.out.println("recovered r="+AHECProject.dbManager.getRecoveredR());
         }
     }
 
-    public String getCurrentUser()
-    {
+    public void logout() {
+        currentUser = "";
+    }
+
+    public String getCurrentUser() {
         return currentUser;
     }
-    
-    public boolean setCurrentUser(String user)
-    {
+
+    public boolean setCurrentUser(String user) {
         currentUser = user;
+
+        AHECProject.optimiser.start();
+        this.start();
         return true;
     }
-    
+
     public void reactivate() {
         if (!AHECProject.dragSolver.isAlive() || !AHECProject.liftSolver.isAlive()) {
             System.out.println("Some solver is dead! Zombifying");
@@ -95,7 +99,7 @@ public class Monitor extends Thread {
     public boolean isAutoMode() {
         return autoMode;
     }
-    
+
     public void setAutomaticMode() {
         autoMode = true;
     }
