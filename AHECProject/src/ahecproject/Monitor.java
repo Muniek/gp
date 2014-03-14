@@ -213,6 +213,11 @@ public class Monitor extends Thread {
         }
     }
 
+    public boolean isAutoMode()
+    {
+        return autoMode;
+    }
+    
     public void setAutomaticMode() {
         autoMode = true;
     }
