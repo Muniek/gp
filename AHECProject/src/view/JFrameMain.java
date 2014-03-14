@@ -557,6 +557,9 @@ private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRS
     chartFrame.setVisible(false);
     AHECProject.loginFrame.setVisible(true);
     AHECProject.monitor.logout();
+    this.counter = 0;
+    this.minimum = 0.0;
+    this.ratioSeries.delete(0, this.ratioSeries.getItemCount());
     jLabelCurrentUser.setText("Logged out");
 }//GEN-LAST:event_jLabelLogOutMouseClicked
 
@@ -564,7 +567,7 @@ private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRS
         if (AHECProject.monitor.isAutoMode()) {
             jButtonAutomatic.setBackground(Color.orange);
             jButtonManual.setBackground(Color.lightGray);
-            jButtonReactivate.setEnabled(false);;
+            jButtonReactivate.setEnabled(false);
         } else {
             jButtonAutomatic.setBackground(Color.lightGray);
             jButtonManual.setBackground(Color.orange);
