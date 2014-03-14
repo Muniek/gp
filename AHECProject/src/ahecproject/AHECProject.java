@@ -18,11 +18,11 @@ public class AHECProject {
     public static Optimiser optimiser = new Optimiser();
     public static Monitor monitor = new Monitor();
     public static DBManager dbManager = new DBManager();
+    public static JFrameLogIn loginFrame = new JFrameLogIn();
     /**
      * @param args the comonitormonitorand line argumonitorents
      */
     public static void main(String[] args) {
-        JFrameLogIn loginFrame = new JFrameLogIn();
         loginFrame.setVisible(true);
 
         System.out.println("it's running!");

@@ -2,6 +2,7 @@ package view;
 
 import ahecproject.*;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +10,8 @@ import javax.swing.JPanel;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.*;
+
+import java.awt.Cursor.*;
 
 /**
  *
@@ -46,7 +49,9 @@ public class JFrameMain extends javax.swing.JFrame {
         jPanelSettings.setVisible(false);
         
         jLabelCurrentUser.setText(AHECProject.monitor.getCurrentUser());
-        
+        jLabelLogOut.setText("<HTML><U>Log Out</U></HTML>");
+        jLabelLogOut.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         runnable = new Thread() {
             @Override
             public void run() {
@@ -81,6 +86,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jButtonAddUserPanel = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabelCurrentUser = new javax.swing.JLabel();
+        jLabelLogOut = new javax.swing.JLabel();
         jLayeredPaneMain = new javax.swing.JLayeredPane();
         jPanelAddUser = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -113,6 +119,8 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jLabelLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/logo.png"))); // NOI18N
 
+        jButtonComputationsPanel.setBackground(new java.awt.Color(-12829897,true));
+        jButtonComputationsPanel.setForeground(new java.awt.Color(-1,true));
         jButtonComputationsPanel.setText("Computations");
         jButtonComputationsPanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -120,6 +128,8 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
+        jButtonSettingsPanel.setBackground(new java.awt.Color(-12829897,true));
+        jButtonSettingsPanel.setForeground(new java.awt.Color(-1,true));
         jButtonSettingsPanel.setText("Settings");
         jButtonSettingsPanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +137,8 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
+        jButtonAddUserPanel.setBackground(new java.awt.Color(-12829897,true));
+        jButtonAddUserPanel.setForeground(new java.awt.Color(-1,true));
         jButtonAddUserPanel.setText("Add User");
         jButtonAddUserPanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +154,15 @@ public class JFrameMain extends javax.swing.JFrame {
         jLabelCurrentUser.setForeground(new java.awt.Color(-14336,true));
         jLabelCurrentUser.setText(" ");
 
+        jLabelLogOut.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabelLogOut.setForeground(new java.awt.Color(-14336,true));
+        jLabelLogOut.setText("Log Out");
+        jLabelLogOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelLogOutMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelHeaderLayout = new javax.swing.GroupLayout(jPanelHeader);
         jPanelHeader.setLayout(jPanelHeaderLayout);
         jPanelHeaderLayout.setHorizontalGroup(
@@ -156,16 +177,21 @@ public class JFrameMain extends javax.swing.JFrame {
                     .addGroup(jPanelHeaderLayout.createSequentialGroup()
                         .addGap(52, 52, 52)
                         .addComponent(jLabelLogo)))
-                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelHeaderLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonAddUserPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButtonAddUserPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(141, Short.MAX_VALUE))
                     .addGroup(jPanelHeaderLayout.createSequentialGroup()
-                        .addGap(94, 94, 94)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelCurrentUser, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelHeaderLayout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabelLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelCurrentUser, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24))))
         );
         jPanelHeaderLayout.setVerticalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,9 +199,12 @@ public class JFrameMain extends javax.swing.JFrame {
                 .addGap(53, 53, 53)
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelLogo)
-                    .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabelCurrentUser)))
+                    .addGroup(jPanelHeaderLayout.createSequentialGroup()
+                        .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabelCurrentUser))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelLogOut)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonComputationsPanel)
@@ -512,6 +541,13 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
      jPasswordFieldPasswordRepeat.setText("");
 }//GEN-LAST:event_jButton1ActionPerformed
 
+private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseClicked
+    jLabelCurrentUser.setText("Logged out");
+    this.setVisible(false);
+    chartFrame.setVisible(false);
+    AHECProject.loginFrame.setVisible(true);
+}//GEN-LAST:event_jLabelLogOutMouseClicked
+
     private void refreshIndicators() {
         if (AHECProject.monitor.isAutoMode()) {
             jButtonAutomatic.setBackground(Color.orange);
@@ -562,9 +598,9 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         ratioChart = ChartFactory.createXYLineChart("Lift/Drag ratio", "Cycle", "Ratio",
                 xyDataset, PlotOrientation.VERTICAL, true, true, false);
 
-        ChartFrame frame1 = new ChartFrame("Ratio", ratioChart);
-        frame1.setVisible(true);
-        frame1.setSize(400, 400);
+        chartFrame = new ChartFrame("Ratio", ratioChart);
+        chartFrame.setVisible(true);
+        chartFrame.setSize(400, 400);
     }
 
     /**
@@ -620,6 +656,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabelCurrentUser;
     private javax.swing.JLabel jLabelDragIndicator;
     private javax.swing.JLabel jLabelLiftIndicator;
+    private javax.swing.JLabel jLabelLogOut;
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JLabel jLabelOptimiserIndicator;
     private javax.swing.JLayeredPane jLayeredPaneMain;
@@ -633,6 +670,9 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JTextPane jTextPaneLogin;
     // End of variables declaration//GEN-END:variables
 
+    
+    ChartFrame chartFrame;
+            
     private void refreshGraph() {
         //refresh graph
         if (ratioSeries != null) {
