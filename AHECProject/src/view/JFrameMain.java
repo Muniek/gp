@@ -542,10 +542,11 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_jButton1ActionPerformed
 
 private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelLogOutMouseClicked
-    jLabelCurrentUser.setText("Logged out");
     this.setVisible(false);
     chartFrame.setVisible(false);
     AHECProject.loginFrame.setVisible(true);
+    AHECProject.monitor.logout();
+    jLabelCurrentUser.setText("Logged out");
 }//GEN-LAST:event_jLabelLogOutMouseClicked
 
     private void refreshIndicators() {
