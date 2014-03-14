@@ -33,20 +33,16 @@ public class DBManager {
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             connectDB();
             setupDB();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    void connectDB() {
-
+    private void connectDB() {
         conn = null;
         try {
             conn = DriverManager.getConnection(
@@ -57,72 +53,36 @@ public class DBManager {
         }
     }
 
-    void setupDB() throws SQLException {
-        Statement stmt = null;
+    private void setupDB() throws SQLException {
+        Statement stmt;
         stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("SELECT * FROM SYS.SYSSCHEMAS WHERE SCHEMANAME = 'AHECDB'");
         if (rs.next()) {
             System.out.println("Schema already exists");
             return;
         }
+        createStateTable();
+        createUserTables();
+        createBestTable();
 
-        String createStateTable = "create table ahecdb.SAVE "
-                + "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                + "R DOUBLE NOT NULL, "
-                + "T DOUBLE NOT NULL, "
-                + "THETA DOUBLE NOT NULL, "
-                + "DRAG DOUBLE NOT NULL, "
-                + "LIFT DOUBLE NOT NULL, "
-                + "SAVED_T TIMESTAMP NOT NULL, "
-                + "PRIMARY KEY (SAVE_ID))";
+        insertUser("admin", "admin");
+    }
 
+    public void insertUser(String user, String password) {
+        PreparedStatement pstmt;
         try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate(createStateTable);
-        } catch (SQLException e) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
+            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME,PASS) VALUES(?,?)");
+            pstmt.setString(1, user);
+            String pass = (new HexBinaryAdapter()).marshal(md5.digest(password.getBytes()));
+            pstmt.setString(2, pass);
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String createUserlogsTable = "create table ahecdb.USERLOGS "
-                + "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                + "USERNAME VARCHAR(30) NOT NULL,"
-                + "SAVED_T TIMESTAMP NOT NULL,"
-                + "PRIMARY KEY (LOG_ID))";
+    }
 
-        stmt = null;
-        try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate(createUserlogsTable);
-        } catch (SQLException e) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-        }
-
-        String createUserTable = "create table ahecdb.USERS "
-                + "(USER_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                + "USERNAME VARCHAR(30) NOT NULL,"
-                + "PASS VARCHAR(30) NOT NULL,"
-                + "SAVED_T TIMESTAMP NOT NULL,"
-                + "PRIMARY KEY (USER_ID))";
-
-        stmt = null;
-        try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate(createUserTable);
-        } catch (SQLException e) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
-        } finally {
-            if (stmt != null) {
-                stmt.close();
-            }
-        }
-
+    private void createBestTable() throws SQLException {
+        Statement stmt;
         String createBestTable = "create table ahecdb.BEST "
                 + "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "R DOUBLE NOT NULL, "
@@ -132,7 +92,6 @@ public class DBManager {
                 + "LIFT DOUBLE NOT NULL,"
                 + "SAVED_T TIMESTAMP NOT NULL,"
                 + "PRIMARY KEY (SAVE_ID))";
-
         stmt = null;
         try {
             stmt = conn.createStatement();
@@ -144,17 +103,67 @@ public class DBManager {
                 stmt.close();
             }
         }
+    }
 
-        PreparedStatement pstmt;
+    private Statement createUserTables() throws SQLException {
+        String createUserlogsTable = "create table ahecdb.USERLOGS "
+                + "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                + "USERNAME VARCHAR(30) NOT NULL,"
+                + "SAVED_T TIMESTAMP NOT NULL,"
+                + "PRIMARY KEY (LOG_ID))";
+        Statement stmt = null;
         try {
-            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME,PASS) VALUES(?,?)");
-            pstmt.setString(1, "admin");
-            String pass = (new HexBinaryAdapter()).marshal(md5.digest("admin".getBytes()));
-            pstmt.setString(2, pass);
-            pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+            stmt = conn.createStatement();
+            stmt.executeUpdate(createUserlogsTable);
+        } catch (SQLException e) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
         }
+        String createUserTable = "create table ahecdb.USERS "
+                + "(USER_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                + "USERNAME VARCHAR(30) NOT NULL,"
+                + "PASS VARCHAR(30) NOT NULL,"
+                + "SAVED_T TIMESTAMP NOT NULL,"
+                + "PRIMARY KEY (USER_ID))";
+        stmt = null;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(createUserTable);
+        } catch (SQLException e) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return stmt;
+    }
+
+    private Statement createStateTable() throws SQLException {
+        String createStateTable = "create table ahecdb.SAVE "
+                + "(SAVE_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
+                + "R DOUBLE NOT NULL, "
+                + "T DOUBLE NOT NULL, "
+                + "THETA DOUBLE NOT NULL, "
+                + "DRAG DOUBLE NOT NULL, "
+                + "LIFT DOUBLE NOT NULL, "
+                + "SAVED_T TIMESTAMP NOT NULL, "
+                + "PRIMARY KEY (SAVE_ID))";
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate(createStateTable);
+        } catch (SQLException e) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        return stmt;
     }
 
     public boolean saveStateValues(double r, double t, double theta, double drag, double lift) {
@@ -206,8 +215,6 @@ public class DBManager {
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        pstmt = null;
 
         try {
             pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERLOGS(USERNAME, SAVED_T) VALUES(?,?)");

@@ -17,7 +17,7 @@ public class AHECProject {
     public static Solver dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
     public static Optimiser optimiser = new Optimiser();
     public static Monitor monitor = new Monitor();
-
+    public static DBManager dbManager = new DBManager();
     /**
      * @param args the comonitormonitorand line argumonitorents
      */

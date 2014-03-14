@@ -5,14 +5,10 @@
  */
 package ahecproject;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 /**
  *
@@ -20,8 +16,7 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
  */
 public class Monitor extends Thread {
 
-    private double prevDrag, prevLift, prevr, prevt, prevtheta;
-    private DBManager dbManager;
+    private double prevDrag, prevLift, prevr, prevt, prevtheta;    
     private static final DateFormat dateFormat = new SimpleDateFormat(
             "yyyy/MM/dd HH:mm:ss");
     private boolean autoMode;    
@@ -32,8 +27,7 @@ public class Monitor extends Thread {
         prevr = 0;
         prevt = 0;
         prevtheta = 0;
-        autoMode = true;
-        dbManager = new DBManager();       
+        autoMode = true;             
         AHECProject.optimiser.start();
         this.start();
     }
@@ -60,12 +54,12 @@ public class Monitor extends Thread {
             prevDrag = drag;
             prevLift = lift;
 
-            dbManager.saveBestResult(AHECProject.optimiser.bestr, AHECProject.optimiser.bestt,
+            AHECProject.dbManager.saveBestResult(AHECProject.optimiser.bestr, AHECProject.optimiser.bestt,
                     AHECProject.optimiser.besttheta, AHECProject.optimiser.bestdrag,
                     AHECProject.optimiser.bestlift);
             System.out.println("saving r="+r);
-            dbManager.saveStateValues(r, t, theta, drag, lift);
-            System.out.println("recovered r="+dbManager.getRecoveredR());
+            AHECProject.dbManager.saveStateValues(r, t, theta, drag, lift);
+            System.out.println("recovered r="+AHECProject.dbManager.getRecoveredR());
         }
     }
 
@@ -75,8 +69,8 @@ public class Monitor extends Thread {
             AHECProject.liftSolver = new Solver(-12.0, 14.0, 60.0, 24.0);
             AHECProject.dragSolver = new Solver(9.0, -29.0, -26.0, 110.0);
             AHECProject.optimiser = new Optimiser();
-            AHECProject.optimiser.bestdrag = dbManager.getBestDrag();
-            AHECProject.optimiser.bestlift = dbManager.getBestLift();
+            AHECProject.optimiser.bestdrag = AHECProject.dbManager.getBestDrag();
+            AHECProject.optimiser.bestlift = AHECProject.dbManager.getBestLift();
             AHECProject.optimiser.start();
         }
 
@@ -87,8 +81,7 @@ public class Monitor extends Thread {
         }
     }
 
-    public boolean isAutoMode()
-    {
+    public boolean isAutoMode() {
         return autoMode;
     }
     
