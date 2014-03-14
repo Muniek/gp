@@ -20,7 +20,7 @@ public class Monitor extends Thread {
     private static final DateFormat dateFormat = new SimpleDateFormat(
             "yyyy/MM/dd HH:mm:ss");
     private boolean autoMode;    
-
+    private String currentUser;
     Monitor() {
         prevDrag = 0;
         prevLift = 0;
@@ -63,6 +63,17 @@ public class Monitor extends Thread {
         }
     }
 
+    public String getCurrentUser()
+    {
+        return currentUser;
+    }
+    
+    public boolean setCurrentUser(String user)
+    {
+        currentUser = user;
+        return true;
+    }
+    
     public void reactivate() {
         if (!AHECProject.dragSolver.isAlive() || !AHECProject.liftSolver.isAlive()) {
             System.out.println("Some solver is dead! Zombifying");

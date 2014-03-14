@@ -182,7 +182,7 @@ public class DBManager {
 
             String testpass = (new HexBinaryAdapter()).marshal(sha256.digest(pass.getBytes()));
             System.out.println("salt is in bytes is " + salt + " hashedpass is " + hashedPass + ",testpass is " + testpass);
-            return (testpass.equals(hashedPass));
+            return (testpass.equals(hashedPass) && AHECProject.monitor.setCurrentUser(username));
 
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
