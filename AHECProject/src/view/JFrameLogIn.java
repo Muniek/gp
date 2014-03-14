@@ -61,14 +61,14 @@ public class JFrameLogIn extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(-1,true));
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18));
         jLabel1.setText("Atomic submarine admin panel");
 
         jTextFieldUsername.setBackground(new java.awt.Color(-1,true));
         jTextFieldUsername.setToolTipText("login");
         jTextFieldUsername.setCaretColor(new java.awt.Color(-12566464,true));
 
-        jButtonLogin.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jButtonLogin.setFont(new java.awt.Font("SansSerif", 0, 14));
         jButtonLogin.setText("Login");
         jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,15 +76,15 @@ public class JFrameLogIn extends javax.swing.JFrame {
             }
         });
 
-        jButtonExit.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jButtonExit.setFont(new java.awt.Font("SansSerif", 0, 14));
         jButtonExit.setText("Exit");
 
         jPasswordFieldPassword.setToolTipText("password");
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 12));
         jLabel2.setText("login");
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 12));
         jLabel3.setText("password");
 
         jLabelErrorMessage.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
