@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * JFrameMain.java
- *
- * Created on 12-Mar-2014, 11:30:00
- */
 package view;
 
 import ahecproject.*;
@@ -21,7 +11,7 @@ import org.jfree.data.xy.*;
 
 /**
  *
- * @author monitoruniek
+ * @author Michał Pochopień @ the hungry beavers
  */
 public class JFrameMain extends javax.swing.JFrame {
 
@@ -290,14 +280,10 @@ private void jButtonOptimiserStopActionPerformed(java.awt.event.ActionEvent evt)
 
 private void jButtonAutomaticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAutomaticActionPerformed
     AHECProject.monitor.setAutomaticMode();
-    jButtonAutomatic.setBackground(Color.orange);
-    jButtonManual.setBackground(Color.lightGray);
 }//GEN-LAST:event_jButtonAutomaticActionPerformed
 
 private void jButtonManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonManualActionPerformed
     AHECProject.monitor.setManualMode();
-    jButtonManual.setBackground(Color.orange);
-    jButtonAutomatic.setBackground(Color.lightGray);
 }//GEN-LAST:event_jButtonManualActionPerformed
 
 private void jButtonReactivateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReactivateActionPerformed
@@ -305,6 +291,14 @@ private void jButtonReactivateActionPerformed(java.awt.event.ActionEvent evt) {/
 }//GEN-LAST:event_jButtonReactivateActionPerformed
 
     private void refreshIndicators() {
+        if (AHECProject.monitor.isAutoMode()) {
+            jButtonAutomatic.setBackground(Color.orange);
+            jButtonManual.setBackground(Color.lightGray);
+        }  else  {
+            jButtonAutomatic.setBackground(Color.lightGray);
+            jButtonManual.setBackground(Color.orange);
+        }
+        
         if (AHECProject.liftSolver.isAlive()) {
             setON(jLabelLiftIndicator);
         } else {
