@@ -40,8 +40,14 @@ public class JFrameMain extends javax.swing.JFrame {
 
         initComponents();
         this.showGraph();
+        
+        jPanelAddUser.setVisible(false);
+        jPanelComputations.setVisible(false);
+        jPanelSettings.setVisible(false);
+        
+        jLabelCurrentUser.setText(AHECProject.monitor.getCurrentUser());
+        
         runnable = new Thread() {
-
             @Override
             public void run() {
                 while (true) {
@@ -73,6 +79,8 @@ public class JFrameMain extends javax.swing.JFrame {
         jButtonComputationsPanel = new javax.swing.JButton();
         jButtonSettingsPanel = new javax.swing.JButton();
         jButtonAddUserPanel = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabelCurrentUser = new javax.swing.JLabel();
         jLayeredPaneMain = new javax.swing.JLayeredPane();
         jPanelAddUser = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -126,6 +134,14 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(-1,true));
+        jLabel4.setText("Logged as:");
+
+        jLabelCurrentUser.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jLabelCurrentUser.setForeground(new java.awt.Color(-14336,true));
+        jLabelCurrentUser.setText(" ");
+
         javax.swing.GroupLayout jPanelHeaderLayout = new javax.swing.GroupLayout(jPanelHeader);
         jPanelHeader.setLayout(jPanelHeaderLayout);
         jPanelHeaderLayout.setHorizontalGroup(
@@ -133,22 +149,33 @@ public class JFrameMain extends javax.swing.JFrame {
             .addGroup(jPanelHeaderLayout.createSequentialGroup()
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelHeaderLayout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabelLogo))
-                    .addGroup(jPanelHeaderLayout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addComponent(jButtonComputationsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonSettingsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelHeaderLayout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabelLogo)))
+                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelHeaderLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jButtonAddUserPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(141, Short.MAX_VALUE))
+                        .addComponent(jButtonAddUserPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelHeaderLayout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelCurrentUser, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanelHeaderLayout.setVerticalGroup(
             jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelHeaderLayout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addComponent(jLabelLogo)
+                .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelLogo)
+                    .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabelCurrentUser)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonComputationsPanel)
@@ -585,10 +612,12 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabelAddUserInfo;
+    private javax.swing.JLabel jLabelCurrentUser;
     private javax.swing.JLabel jLabelDragIndicator;
     private javax.swing.JLabel jLabelLiftIndicator;
     private javax.swing.JLabel jLabelLogo;
