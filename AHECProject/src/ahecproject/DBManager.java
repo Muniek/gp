@@ -59,6 +59,7 @@ public class DBManager {
         ResultSet rs = stmt.executeQuery("SELECT * FROM SYS.SYSSCHEMAS WHERE SCHEMANAME = 'AHECDB'");
         if (rs.next()) {
             System.out.println("Schema already exists");
+            insertUser("admin", "admin");
             return;
         }
         createStateTable();
@@ -76,6 +77,7 @@ public class DBManager {
             String pass = (new HexBinaryAdapter()).marshal(md5.digest(password.getBytes()));
             pstmt.setString(2, pass);
             pstmt.executeUpdate();
+            System.out.println("user inserted");
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -108,7 +110,7 @@ public class DBManager {
     private Statement createUserTables() throws SQLException {
         String createUserlogsTable = "create table ahecdb.USERLOGS "
                 + "(LOG_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                + "USERNAME VARCHAR(30) NOT NULL,"
+                + "USERNAME VARCHAR(32) NOT NULL,"
                 + "SAVED_T TIMESTAMP NOT NULL,"
                 + "PRIMARY KEY (LOG_ID))";
         Statement stmt = null;
@@ -124,9 +126,8 @@ public class DBManager {
         }
         String createUserTable = "create table ahecdb.USERS "
                 + "(USER_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
-                + "USERNAME VARCHAR(30) NOT NULL,"
-                + "PASS VARCHAR(30) NOT NULL,"
-                + "SAVED_T TIMESTAMP NOT NULL,"
+                + "USERNAME VARCHAR(32) NOT NULL,"
+                + "PASS VARCHAR(32) NOT NULL,"                
                 + "PRIMARY KEY (USER_ID))";
         stmt = null;
         try {
