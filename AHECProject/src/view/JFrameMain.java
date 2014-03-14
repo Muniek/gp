@@ -83,6 +83,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jPasswordFieldPassword = new javax.swing.JPasswordField();
         jPasswordFieldPasswordRepeat = new javax.swing.JPasswordField();
         jLabel7 = new javax.swing.JLabel();
+        jLabelAddUserInfo = new javax.swing.JLabel();
         jPanelSettings = new javax.swing.JPanel();
         jButtonAutomatic = new javax.swing.JButton();
         jButtonManual = new javax.swing.JButton();
@@ -170,28 +171,37 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jLabel7.setText("repeat");
 
+        jLabelAddUserInfo.setText(" ");
+
         javax.swing.GroupLayout jPanelAddUserLayout = new javax.swing.GroupLayout(jPanelAddUser);
         jPanelAddUser.setLayout(jPanelAddUserLayout);
         jPanelAddUserLayout.setHorizontalGroup(
             jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAddUserLayout.createSequentialGroup()
-                .addGap(196, 196, 196)
-                .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7))
-                .addGap(18, 18, 18)
-                .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPasswordFieldPasswordRepeat, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(288, Short.MAX_VALUE))
+                .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelAddUserLayout.createSequentialGroup()
+                        .addGap(196, 196, 196)
+                        .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                            .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPasswordFieldPasswordRepeat, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addGroup(jPanelAddUserLayout.createSequentialGroup()
+                        .addGap(210, 210, 210)
+                        .addComponent(jLabelAddUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(210, Short.MAX_VALUE))
         );
         jPanelAddUserLayout.setVerticalGroup(
             jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAddUserLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
+                .addGap(17, 17, 17)
+                .addComponent(jLabelAddUserInfo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -439,7 +449,29 @@ private void jButtonAddUserPanelActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_jButtonAddUserPanelActionPerformed
 
 private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    AHECProject.dbManager.insertUser(jTextPaneLogin.getText(), jPasswordFieldPassword.getText());
+    //password validation
+    String errorMessage = "";
+    if (jTextPaneLogin.getText().length() < 4)
+        errorMessage = "Login needs to be at least 4 characters long";
+    
+    if (!jPasswordFieldPassword.getText().equals(jPasswordFieldPasswordRepeat.getText()))
+        errorMessage = "Password and password repeat are different";
+    
+    if (jPasswordFieldPassword.getPassword().length < 6)
+         errorMessage = "Password needs to be at least 6 characters long";
+        
+    if (errorMessage.isEmpty()) {
+        jLabelAddUserInfo.setText("User added");
+        jLabelAddUserInfo.setForeground(Color.green);
+        AHECProject.dbManager.insertUser(jTextPaneLogin.getText(), jPasswordFieldPassword.getText());        
+        
+    } else  {
+        jLabelAddUserInfo.setText(errorMessage);
+        jLabelAddUserInfo.setForeground(Color.red);
+        //cleaning the password boxes
+        jPasswordFieldPassword.setText("");
+        jPasswordFieldPasswordRepeat.setText("");
+    }
 }//GEN-LAST:event_jButton1ActionPerformed
 
     private void refreshIndicators() {
@@ -544,6 +576,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelAddUserInfo;
     private javax.swing.JLabel jLabelDragIndicator;
     private javax.swing.JLabel jLabelLiftIndicator;
     private javax.swing.JLabel jLabelOptimiserIndicator;
