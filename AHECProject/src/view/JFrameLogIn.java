@@ -128,8 +128,8 @@ public class JFrameLogIn extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
-    //if (AHECProject.dbManager.logUser(jTextFieldUsername.getText(), jPasswordFieldPassword.getText())) {
-    if(true){
+    if (AHECProject.dbManager.logUser(jTextFieldUsername.getText(), jPasswordFieldPassword.getText())) {
+    //if(true){
         this.setVisible(false);
         JFrameMain frame = new JFrameMain();
         frame.setDefaultCloseOperation(JFrameMain.EXIT_ON_CLOSE);

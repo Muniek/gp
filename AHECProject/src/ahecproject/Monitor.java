@@ -72,9 +72,9 @@ public class Monitor extends Thread {
 
     public boolean setCurrentUser(String user) {
         currentUser = user;
-
-        AHECProject.optimiser.start();
-        this.start();
+        
+        AHECProject.optimiser = new Optimiser();
+        AHECProject.optimiser.start();       
         return true;
     }
 
