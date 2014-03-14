@@ -7,6 +7,7 @@ package ahecproject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
@@ -25,11 +27,11 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 public class DBManager {
 
     private Connection conn;
-    private MessageDigest md5;
+    private MessageDigest sha256;
 
     public DBManager() {
         try {
-            md5 = MessageDigest.getInstance("MD5");
+            sha256 = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,7 +61,6 @@ public class DBManager {
         ResultSet rs = stmt.executeQuery("SELECT * FROM SYS.SYSSCHEMAS WHERE SCHEMANAME = 'AHECDB'");
         if (rs.next()) {
             System.out.println("Schema already exists");
-            insertUser("admin", "admin");
             return;
         }
         createStateTable();
@@ -69,18 +70,38 @@ public class DBManager {
         insertUser("admin", "admin");
     }
 
-    public void insertUser(String user, String password) {
+    public boolean insertUser(String user, String password) {
         PreparedStatement pstmt;
+        ResultSet rs;
         try {
-            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME,PASS) VALUES(?,?)");
+            pstmt = conn.prepareStatement("SELECT * FROM AHECDB.USERS WHERE USERNAME = ?");
             pstmt.setString(1, user);
-            String pass = (new HexBinaryAdapter()).marshal(md5.digest(password.getBytes()));
+            rs = pstmt.executeQuery();
+            //if the user already exists
+            if (rs.next()) {
+                return false;
+            }
+
+            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERS(USERNAME,PASS,SALT) VALUES(?,?,?)");
+            SecureRandom random = new SecureRandom();
+            byte salt[] = new byte[256];
+            random.nextBytes(salt);
+
+            sha256.reset();
+            sha256.update(salt);
+            System.out.println("salt is in bytes " + salt);
+            pstmt.setString(1, user);
+            String pass = (new HexBinaryAdapter()).marshal(sha256.digest(password.getBytes()));
+            System.out.println("pass is " + pass + ",length " + pass.length());
             pstmt.setString(2, pass);
+            pstmt.setBytes(3, salt);
             pstmt.executeUpdate();
             System.out.println("user inserted");
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     private void createBestTable() throws SQLException {
@@ -127,7 +148,8 @@ public class DBManager {
         String createUserTable = "create table ahecdb.USERS "
                 + "(USER_ID integer NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), "
                 + "USERNAME VARCHAR(32) NOT NULL,"
-                + "PASS VARCHAR(32) NOT NULL,"                
+                + "PASS VARCHAR(64) NOT NULL,"
+                + "SALT BLOB(256) NOT NULL,"
                 + "PRIMARY KEY (USER_ID))";
         stmt = null;
         try {
@@ -141,6 +163,40 @@ public class DBManager {
             }
         }
         return stmt;
+    }
+
+    public boolean logUser(String username, String pass) {
+        PreparedStatement pstmt;
+        ResultSet rs;
+        try {
+            pstmt = conn.prepareStatement("SELECT PASS,SALT FROM AHECDB.USERS WHERE USERNAME = ?");
+            pstmt.setString(1, username);
+            rs = pstmt.executeQuery();
+            if (!rs.next()) {
+                return false;
+            }
+            String hashedPass = rs.getString("PASS");
+            byte salt[] = rs.getBytes("SALT");
+            sha256.reset();
+            sha256.update(salt);
+
+            String testpass = (new HexBinaryAdapter()).marshal(sha256.digest(pass.getBytes()));
+            System.out.println("salt is in bytes is " + salt + " hashedpass is " + hashedPass + ",testpass is " + testpass);
+            return (testpass.equals(hashedPass));
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERLOGS(USERNAME, SAVED_T) VALUES(?,?)");
+            pstmt.setString(1, username);
+            pstmt.setTimestamp(2, getCurrentTimeStamp());
+            pstmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
     }
 
     private Statement createStateTable() throws SQLException {
@@ -194,33 +250,6 @@ public class DBManager {
             pstmt.setDouble(4, drag);
             pstmt.setDouble(5, lift);
             pstmt.setTimestamp(6, getCurrentTimeStamp());
-            pstmt.executeUpdate();
-        } catch (SQLException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return true;
-    }
-
-    public boolean logUser(String username, String pass) {
-        PreparedStatement pstmt;
-        ResultSet rs;
-        try {
-            pstmt = conn.prepareStatement("SELECT * FROM AHECDB.USERS WHERE USERNAME = ? AND PASS = ?");
-            pstmt.setString(1, username);
-            pass = (new HexBinaryAdapter()).marshal(md5.digest(pass.getBytes()));
-            pstmt.setString(2, pass);
-            rs = pstmt.executeQuery();
-            if (!rs.next()) {
-                return false;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            pstmt = conn.prepareStatement("INSERT INTO AHECDB.USERLOGS(USERNAME, SAVED_T) VALUES(?,?)");
-            pstmt.setString(1, username);
-            pstmt.setTimestamp(2, getCurrentTimeStamp());
             pstmt.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
