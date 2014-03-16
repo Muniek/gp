@@ -180,10 +180,10 @@ public class DBManager {
             sha256.reset();
             sha256.update(salt);
 
-            String testpass = (new HexBinaryAdapter()).marshal(sha256.digest(pass.getBytes()));
-            System.out.println("salt is in bytes is " + salt + " hashedpass is " + hashedPass + ",testpass is " + testpass);
-            return (testpass.equals(hashedPass) && AHECProject.monitor.setCurrentUser(username));
-
+            String testpass = (new HexBinaryAdapter()).marshal(sha256.digest(pass.getBytes()));            
+             
+            if(!testpass.equals(hashedPass))
+                return false;
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -193,6 +193,7 @@ public class DBManager {
             pstmt.setString(1, username);
             pstmt.setTimestamp(2, getCurrentTimeStamp());
             pstmt.executeUpdate();
+            AHECProject.monitor.setCurrentUser(username);
         } catch (SQLException ex) {
             Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
         }

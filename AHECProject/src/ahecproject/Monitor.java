@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 public class Monitor extends Thread {
 
     private double prevDrag, prevLift, prevr, prevt, prevtheta;
-    private static final DateFormat dateFormat = new SimpleDateFormat(
-            "yyyy/MM/dd HH:mm:ss");
     private boolean autoMode;
     private String currentUser;
 
@@ -35,15 +33,13 @@ public class Monitor extends Thread {
 
     @Override
     public void run() {
-        while (true) {
-            System.out.println("run");
+        while (true) {            
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (!currentUser.isEmpty()) {
-                System.out.println("no empty");
+            if (!currentUser.isEmpty()) {                
                 double drag, lift, r, t, theta;
                 drag = AHECProject.optimiser.getDrag();
                 lift = AHECProject.optimiser.getLift();
