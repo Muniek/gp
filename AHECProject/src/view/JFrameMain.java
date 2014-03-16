@@ -700,12 +700,11 @@ private void jLabelLogOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRS
                 } else {
                     ratioSeries.add(counter, ratio);
                 }
-                lastRatio = ratio;
-                //20s -> counter=60
+                lastRatio = ratio;                
                 if (minimum < max) {
                     double x = counter;
                     minimum = 547.0 / 6930000 * (x + 45) * (x + 45) * (x + 45) - 35279.0 / 1386000 * (x + 45) * (x + 45) + 129629.0 / 46200 * x + 11677.0 / 280;
-                    System.out.println("counter=" + counter + ", min=" + minimum);
+                    //System.out.println("counter=" + counter + ", min=" + minimum);
                 }
             }
         }

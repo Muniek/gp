@@ -133,7 +133,7 @@ private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         this.setVisible(false);
         JFrameMain frame = new JFrameMain();
         frame.setDefaultCloseOperation(JFrameMain.EXIT_ON_CLOSE);
-        frame.setVisible(true);
+        frame.setVisible(true);       
     } else {
         //showing the error message
         jLabelErrorMessage.setText("Incorrect login or password");

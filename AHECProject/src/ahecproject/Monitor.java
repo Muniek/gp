@@ -29,18 +29,21 @@ public class Monitor extends Thread {
         prevt = 0;
         prevtheta = 0;
         autoMode = true;
-
+        currentUser = "";
+        this.start();
     }
 
     @Override
     public void run() {
         while (true) {
+            System.out.println("run");
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Monitor.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (!currentUser.isEmpty()) {
+                System.out.println("no empty");
                 double drag, lift, r, t, theta;
                 drag = AHECProject.optimiser.getDrag();
                 lift = AHECProject.optimiser.getLift();
@@ -48,6 +51,7 @@ public class Monitor extends Thread {
                 t = AHECProject.optimiser.t;
                 theta = AHECProject.optimiser.theta;
                 if (drag == prevDrag && lift == prevLift && autoMode) {
+                    System.out.println("reactivating");
                     this.reactivate();
                 }
 
