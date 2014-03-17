@@ -1,17 +1,6 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * JFrameLogIn.java
- *
- * Created on 12-Mar-2014, 16:10:30
- */
 package view;
 
 import ahecproject.AHECProject;
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
 import java.awt.Color;
 
 /**

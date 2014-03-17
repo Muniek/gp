@@ -6,12 +6,9 @@ import java.awt.Cursor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JPanel;
 import org.jfree.chart.*;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.*;
-
-import java.awt.Cursor.*;
 
 /**
  *

@@ -1,36 +1,44 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ahecproject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Class responsible for monitoring the optimisation process and
+ * its restoration if one of the threads fail.
  * @author Dsiefus
  */
 public class Monitor extends Thread {
 
-    private double prevDrag, prevLift, prevr, prevt, prevtheta;
-    private boolean autoMode;
-    private String currentUser;
+    private double prevDrag, prevLift; // values obtained from the previous calculations
+    //prevr, prevt, prevtheta;
+    private boolean autoMode; // recovery mode (false: manual, true: auto)
+    private String currentUser; // currently logged in user
 
+    /**
+     * Default constructor of the class.
+     * Sets the initial values for the member variables,
+     * then starts its own thread.
+     */
     Monitor() {
         prevDrag = 0;
         prevLift = 0;
-        prevr = 0;
-        prevt = 0;
-        prevtheta = 0;
+        //prevr = 0;
+        //prevt = 0;
+        //prevtheta = 0;
         autoMode = true;
         currentUser = "";
         this.start();
     }
 
+    /**
+     * Contains the main execution loop for the running thread.
+     * Periodically gets the current users from the optimiser class,
+     * if the results are the same as before "suspects" a failure and
+     * tries to restore the system by calling the reactivate() function.
+     * Save the results into the database at each step.
+     * @see #reactivate()
+     */
     @Override
     public void run() {
         while (true) {            
@@ -62,14 +70,29 @@ public class Monitor extends Thread {
         }
     }
 
+    /**
+     * Sets the current user to an empty string.
+     */
     public void logout() {
         currentUser = "";
     }
 
+    /**
+     * Public getter for the currentUser member variable.
+     * @return currentUser
+     * @see #currentUser
+     */
     public String getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Public setter for the currentUser member variable.
+     * Also starts a new optimiser, since it is used only on user login.
+     * @param user the name of the logged in user.
+     * @return true
+     * @see #currentUser
+     */
     public boolean setCurrentUser(String user) {
         currentUser = user;
         
@@ -78,6 +101,11 @@ public class Monitor extends Thread {
         return true;
     }
 
+    /**
+     * Method responsible for system reactivation.
+     * Checks if the working threads are alive and if not,
+     * creates and starts new instances of them.
+     */
     public void reactivate() {
         if (!AHECProject.dragSolver.isAlive() || !AHECProject.liftSolver.isAlive()) {
             System.out.println("Some solver is dead! Zombifying");
@@ -96,16 +124,28 @@ public class Monitor extends Thread {
         }
     }
 
+    /**
+     * Public getter for the autoMode member variable.
+     * @return autoMode
+     * @see #autoMode
+     */
     public boolean isAutoMode() {
         return autoMode;
     }
 
+    /**
+     * Sets autoMode to true.
+     * @see #autoMode
+     */
     public void setAutomaticMode() {
         autoMode = true;
     }
 
+    /**
+     * Sets autoMode to false.
+     * @see #autoMode
+     */
     public void setManualMode() {
         autoMode = false;
     }
-
 }

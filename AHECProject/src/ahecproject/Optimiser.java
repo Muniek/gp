@@ -1,20 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ahecproject;
 
 /**
- *
+ * Workflow controller thread that is responsible for communication with the solvers.
+ * Runs on its own thread in an infiniete loop.
  * @author Dsiefus
  */
 public class Optimiser extends Thread {
 
-    public double r, t, theta;
-    double drag, lift;
-    public double bestr, bestt, besttheta, bestratio, bestlift, bestdrag;
+    public double r, t, theta; // parameters
+    double drag, lift; // results
+    public double bestr, bestt, besttheta, bestratio, bestlift, bestdrag; // known best results
 
+    /**
+     * Default constructor for the class.
+     * It initialises the parameters with a random vaule and
+     * sets the actual best values to zero.
+     */
     public Optimiser() {
         r = Math.random() * 9;
         t = Math.random() * 9;
@@ -27,6 +28,12 @@ public class Optimiser extends Thread {
         bestdrag = 0;
     }
 
+    /**
+     * Method that contains the main execution loop.
+     * The loop runs infinitely if nothing interrupt it.
+     * At every step it gets the results from the solvers,
+     * updates its variables and then waits for a bit.
+     */
     @Override
     public void run() {
         try {
@@ -61,10 +68,20 @@ public class Optimiser extends Thread {
 
     }
 
+    /**
+     * Public getter function for lift.
+     * @return the current value of lift
+     * @see #lift
+     */
     public double getLift() {
         return lift;
     }
 
+    /**
+     * Public getter function for drag.
+     * @return the current value of drag
+     * @see #drag
+     */
     public double getDrag() {
         return drag;
     }
