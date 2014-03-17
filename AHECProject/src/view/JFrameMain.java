@@ -218,20 +218,19 @@ public class JFrameMain extends javax.swing.JFrame {
         jLayeredPaneMain.setForeground(new java.awt.Color(-1118482,true));
 
         jPanelAddUser.setBackground(new java.awt.Color(-1118482,true));
-        jPanelAddUser.setBorder(null);
         jPanelAddUser.setForeground(new java.awt.Color(-1118482,true));
 
-        jLabelAddUserInfo.setFont(new java.awt.Font("SansSerif", 2, 14)); // NOI18N
+        jLabelAddUserInfo.setFont(new java.awt.Font("SansSerif", 2, 14));
         jLabelAddUserInfo.setText(" ");
 
-        jTextPaneLogin.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jTextPaneLogin.setFont(new java.awt.Font("SansSerif", 0, 14));
         jScrollPane1.setViewportView(jTextPaneLogin);
 
-        jPasswordFieldPassword.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jPasswordFieldPassword.setFont(new java.awt.Font("SansSerif", 0, 14));
 
-        jPasswordFieldPasswordRepeat.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jPasswordFieldPasswordRepeat.setFont(new java.awt.Font("SansSerif", 0, 14));
 
-        jButton1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("SansSerif", 0, 14));
         jButton1.setText("Add user");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -239,13 +238,13 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 14));
         jLabel7.setText("repeat");
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("SansSerif", 0, 14));
         jLabel6.setText("password");
 
-        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("SansSerif", 0, 14));
         jLabel5.setText("login");
 
         javax.swing.GroupLayout jPanelAddUserLayout = new javax.swing.GroupLayout(jPanelAddUser);
@@ -253,30 +252,29 @@ public class JFrameMain extends javax.swing.JFrame {
         jPanelAddUserLayout.setHorizontalGroup(
             jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAddUserLayout.createSequentialGroup()
-                .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelAddUserLayout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jLabelAddUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelAddUserLayout.createSequentialGroup()
-                        .addGap(308, 308, 308)
-                        .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
-                            .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordFieldPasswordRepeat, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addContainerGap(282, Short.MAX_VALUE))
+                .addGap(308, 308, 308)
+                .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                    .addComponent(jPasswordFieldPassword, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPasswordFieldPasswordRepeat, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(322, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAddUserLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelAddUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(170, 170, 170))
         );
         jPanelAddUserLayout.setVerticalGroup(
             jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAddUserLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(jLabelAddUserInfo)
-                .addGap(47, 47, 47)
+                .addGap(53, 53, 53)
                 .addGroup(jPanelAddUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -290,11 +288,11 @@ public class JFrameMain extends javax.swing.JFrame {
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
+        jLayeredPaneMain.add(jPanelAddUser);
         jPanelAddUser.setBounds(0, 0, 860, 360);
-        jLayeredPaneMain.add(jPanelAddUser, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanelComputations.setBackground(new java.awt.Color(-1118482,true));
         jPanelComputations.setForeground(new java.awt.Color(-1118482,true));
@@ -396,11 +394,10 @@ public class JFrameMain extends javax.swing.JFrame {
                 .addContainerGap(47, Short.MAX_VALUE))
         );
 
+        jLayeredPaneMain.add(jPanelComputations);
         jPanelComputations.setBounds(0, 0, 870, 370);
-        jLayeredPaneMain.add(jPanelComputations, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jPanelSettings.setBackground(new java.awt.Color(-1118482,true));
-        jPanelSettings.setBorder(null);
         jPanelSettings.setForeground(new java.awt.Color(-1118482,true));
 
         jButtonAutomatic.setFont(new java.awt.Font("SansSerif", 0, 14));
@@ -453,8 +450,8 @@ public class JFrameMain extends javax.swing.JFrame {
                 .addContainerGap(169, Short.MAX_VALUE))
         );
 
+        jLayeredPaneMain.add(jPanelSettings);
         jPanelSettings.setBounds(0, 0, 870, 370);
-        jLayeredPaneMain.add(jPanelSettings, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
